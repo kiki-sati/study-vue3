@@ -23,6 +23,23 @@
         <NuxtLink v-slot="{ navigate }" custom to="/admin">
           <q-btn stretch flat :label="$t('admin')" no-caps @click="navigate" />
         </NuxtLink>
+        <q-separator dark vertical />
+        <q-btn-dropdown stretch flat no-caps :label="selectedLanguageName">
+          <q-list padding dense>
+            <q-item
+              v-for="{ code, name } in languages"
+              :key="code"
+              v-close-popup
+              clickable
+              :active='$i18n.locale === code'
+              @click='$i18n.locale = code'
+            >
+              <q-item-section>
+                <q-item-label>{{ name }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-btn-dropdown>
       </q-toolbar>
     </q-header>
     <q-page-container :style="pageContainerStyle">
@@ -31,6 +48,7 @@
   </q-layout>
 </template>
 <script setup lang="ts">
+
 const pageContainerStyle = computed(() => ({
   maxWidth: '1080px',
   margin: '0 auto',
@@ -52,4 +70,11 @@ const languages = ref<Language[]>([
   { name: 'English', code: 'en' },
   { name: '한국어', code: 'ko' },
 ]);
+
+// 외부 라이브러리는 autoimport 지원 x 그래서 nuxt.config.ts에 설정 해주면 가능
+const {locale} = useI18n();
+const selectedLanguageName =
+  computed(() => languages.value.find((lang) => lang.code == locale.value)?.name,
+  );
+
 </script>
