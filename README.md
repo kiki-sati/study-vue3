@@ -144,8 +144,6 @@ const selectedLanguageName =
 
 ### 사용법
 
----
-
 **방법 1:** **named export** 사용
 
 ```jsx
@@ -185,7 +183,9 @@ export default function (arr: Array<any>) {
 
 ⚠️ 이러한 유틸리티 함수는 앱의 Vue 부분 내에서만 사용할 수 있습니다. `server/` 디렉토리에서는 오직 `server/utils`가 자동으로 가져와집니다.
 
-## Auto-imports
+--- 
+
+## 4-3 Auto-imports
 - Nuxt는 컴포넌트, 컴포저블 그리고 Vue.js API를 자동으로 가져와서 명시적으로 import하지 않고도 애플리케이션 전체에서 사용할 수 있도록 합니다.
 ```javascript
 // app.vue
@@ -216,7 +216,7 @@ export default defineNuxtConfig({
 })
 ```
 
-## [**third-party 패키지 Auto-import**](https://nuxt.com/docs/guide/concepts/auto-imports#auto-import-from-third-party-packages)
+### [**third-party 패키지 Auto-import**](https://nuxt.com/docs/guide/concepts/auto-imports#auto-import-from-third-party-packages)
 
 - Nuxt는 타사(third-party) 패키지에서 Auto-import를 허용합니다.
 - 예를 들어 다음과 같이 vue-i18n 패키지에서 useI18n 컴포저블 함수를 Auto-import 사용 설정할 수 있습니다.
@@ -233,3 +233,25 @@ export default defineNuxtConfig({
   }
 })
 ```
+--- 
+## 4-4 Rendering Modes
+https://nuxt.com/docs/guide/concepts/rendering
+- Nuxt는 다양한 렌더링 모드를 지원하고, 환경구성의 한 줄 설정으로 렌더링 모드를 전환할 수 있습니다. 
+- Universal rendering
+- Client-Side Rendering
+- Hybrid Rendering
+- Edge-Side Rendering
+
+### Universal rendering
+- 서버사이드 장점 + 싱글페이지 장점 결합
+  - 브라우저 범용(universal)(server-side + client-side)
+- 초기 로딩 속도 빠르게함
+- 검색 엔진 최적화
+- 빠른 렌더링 
+```javascript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  ssr: true // default  
+})
+```
+
