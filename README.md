@@ -254,4 +254,8 @@ export default defineNuxtConfig({
   ssr: true // default  
 })
 ```
-
+--- 
+## 4-5 Hydration
+https://ko.vuejs.org/guide/scaling-up/ssr#server-side-rendering-ssr
+- Nuxt3에서 하이드레이션은 서버에서 렌더링된 HTML을 클라이언트에서 동적으로 완성하는 과정
+- 하이드레이션을 통해 서버에서 렌더링된 HTML에 JavaScript를 추가하여 사용자 입력에 반응하거나 데이터를 동적으로 업데이트할 수 있다.
