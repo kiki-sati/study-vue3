@@ -185,3 +185,51 @@ export default function (arr: Array<any>) {
 
 ⚠️ 이러한 유틸리티 함수는 앱의 Vue 부분 내에서만 사용할 수 있습니다. `server/` 디렉토리에서는 오직 `server/utils`가 자동으로 가져와집니다.
 
+## Auto-imports
+- Nuxt는 컴포넌트, 컴포저블 그리고 Vue.js API를 자동으로 가져와서 명시적으로 import하지 않고도 애플리케이션 전체에서 사용할 수 있도록 합니다.
+```javascript
+// app.vue
+<script setup lang="ts">
+const count = ref(1) // ref is auto-imported
+</script>
+```
+
+- 독창적인 디렉터리 구조 덕분에 Nuxt는 components/, composables/ 및 utils/ 디렉터리의 리소스를 자동으로 가져올 수 있습니다.
+- 전역 선언과 달리 Nuxt는 입력, 빌드 시 실제 사용하는 코드만 import 할 수 있도록 지원합니다.
+- `nuxt.config` 파일의 `imports` 섹션을 구성하여 사용자 정의 폴더 또는 타사 패키지에서 내보낸 기능을 자동으로 가져올 수도 있습니다.
+
+
+
+![img_1.png](img_1.png)
+- 개발자도구에서 확인된 소싀. 아래 사진과 같이 자동 import 된걸 확인 할 수 있다. 
+![img_2.png](img_2.png)
+
+### [**Auto-imports 비활성화**](https://nuxt.com/docs/guide/concepts/auto-imports#disabling-auto-imports)
+
+- 컴포저블 및 유틸리티 자동 가져오기를 사용 중지하려면 `nuxt.config` 파일에서 `imports.autoImport`를 `false`로 설정하면 됩니다.
+```javascript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  components: {
+    dirs: []
+  }
+})
+```
+
+## [**third-party 패키지 Auto-import**](https://nuxt.com/docs/guide/concepts/auto-imports#auto-import-from-third-party-packages)
+
+- Nuxt는 타사(third-party) 패키지에서 Auto-import를 허용합니다.
+- 예를 들어 다음과 같이 vue-i18n 패키지에서 useI18n 컴포저블 함수를 Auto-import 사용 설정할 수 있습니다.
+```javascript
+// nuxt.config.ts
+export default defineNuxtConfig({
+  imports: {
+    presets: [
+      {
+        from: 'vue-i18n',
+        imports: ['useI18n']
+      }
+    ]
+  }
+})
+```
