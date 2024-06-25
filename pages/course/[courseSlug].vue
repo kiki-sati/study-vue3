@@ -54,7 +54,7 @@
           unelevated
           :outline="!completed"
           :icon="completed ? 'check' : undefined"
-          @click="completed = !completed"
+          @click="toggleComplete"
         />
         <q-input
           v-model="memo"
@@ -96,12 +96,20 @@
 </template>
 
 <script setup lang="ts">
-import { move } from '@antfu/utils';
 import { useCourse } from '~/composables/useCourse';
 
 const route = useRoute();
 const courseSlug = route.params.courseSlug as string;
 const { course, prevCourse, nextCourse } = useCourse(courseSlug);
+
+if (!course) {
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Course not found',
+    fatal: true,
+  });
+}
+
 console.log('[courseSlug].vue 컴포넌트 setup hooks');
 definePageMeta({
   // definePageMeta 는 밖에 있는 함수로 컴포넌트를 참조할 수 없음.
@@ -117,6 +125,11 @@ const completed = ref(false);
 
 const movePage = async (path: string) => {
   await navigateTo(path);
+};
+
+const toggleComplete = () => {
+  // $fetch('/api/error');
+  completed.value = !completed.value;
 };
 </script>
 
