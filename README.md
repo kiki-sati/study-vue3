@@ -685,4 +685,6 @@ definePageMeta({
 > 따라서 라우트 유효성 검사와 페이지에 대한 사용자 지정 동작을 구현할 때 적절한 것을 선택해야 합니다.
 ### 참고
 https://nuxt.com/docs/guide/directory-structure/middleware
+
 --- 
+## 6-2 Authentication 로그인 UI 만들기

@@ -31,8 +31,8 @@
               :key="code"
               v-close-popup
               clickable
-              :active='$i18n.locale === code'
-              @click='$i18n.locale = code'
+              :active="$i18n.locale === code"
+              @click="$i18n.locale = code"
             >
               <q-item-section>
                 <q-item-label>{{ name }}</q-item-label>
@@ -40,6 +40,25 @@
             </q-item>
           </q-list>
         </q-btn-dropdown>
+        <q-separator dark vertical />
+        <NuxtLink v-slot="{ navigate }" custom to="/login">
+          <q-btn
+            stretch
+            flat
+            :label="$t('login')"
+            no-caps
+            @click="navigate()"
+          />
+        </NuxtLink>
+        <NuxtLink v-slot="{ navigate }" custom to="/">
+          <q-btn
+            stretch
+            flat
+            :label="$t('logout')"
+            no-caps
+            @click="navigate()"
+          />
+        </NuxtLink>
       </q-toolbar>
     </q-header>
     <q-page-container :style="pageContainerStyle">
@@ -48,7 +67,6 @@
   </q-layout>
 </template>
 <script setup lang="ts">
-
 const pageContainerStyle = computed(() => ({
   maxWidth: '1080px',
   margin: '0 auto',
@@ -72,9 +90,8 @@ const languages = ref<Language[]>([
 ]);
 
 // 외부 라이브러리는 autoimport 지원 x 그래서 nuxt.config.ts에 설정 해주면 가능
-const {locale} = useI18n();
-const selectedLanguageName =
-  computed(() => languages.value.find((lang) => lang.code == locale.value)?.name,
-  );
-
+const { locale } = useI18n();
+const selectedLanguageName = computed(
+  () => languages.value.find((lang) => lang.code == locale.value)?.name,
+);
 </script>
