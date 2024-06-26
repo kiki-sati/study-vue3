@@ -129,6 +129,7 @@ const movePage = async (path: string) => {
 
 const toggleComplete = () => {
   // $fetch('/api/error');
+  showError('에러가 발생했습니다.');
   completed.value = !completed.value;
 };
 </script>

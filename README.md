@@ -440,3 +440,51 @@ export default defineNuxtPlugin(nuxtApp => {
  - [Quasar > Notify](https://quasar.dev/quasar-plugins/notify)
 
 --- 
+## 5-4 Error Utils - showError
+- pages, components 그리고 plugins 클라이언트 측에서 showError를 사용하여 에러 페이지를 표시할 수 있다.
+
+### 파라미터
+- error - 문자열 또는 에러 객체 (부분적인 속성을 포함할 수 있음)
+  ```javascript
+  // 문자열로 간단한 에러 표시
+  showError("😱 Oh no, an error has been thrown.");
+  
+  // 객체를 사용하여 더 많은 메타데이터 전달
+  showError({
+    statusCode: 404,
+    statusMessage: "Page Not Found"
+  });
+  ```
+- `useError()`를 사용하여 상태 설정함.
+- 컴포넌트 간에 반응적이고 SSR에 친화적인 에러 상태 생성
+- `showError는` `app:error` 훅을 호출한다.
+
+### `showError` vs `createError`
+- Nuxt3에서 에러를 다루는 두 가지 방법
+  - createError
+    - 서버에서 발생한 에러 처리
+    - 에러 객체 생성 및 더 많은 메타데이터 포함 가능
+    - 서버에서 에러를 던지면 전체 화면 에러 페이지를 트리거 한다.
+    - 클라이언트에선 사용자가 처리할 수 있는 비치명적인 에러를 던짐
+    - 예시 소스 : 404 에러 생성 처리
+    ```javascript
+    throw createError({
+      statusCode: 404,
+      statusMessage: 'Page Not Found',
+      data: {
+        myCustomField: true
+      }
+    });
+    ```   
+  - showError
+    - 클라이언트에서 특정 시점에 에러 페이지를 표시하는데 사용 됨
+    - 클라이언트에서 언제든지 호출할 수 있는 함수
+    - 에러를 처리하고 에러 페이지를 트리거한다.
+    - 주로 클라이언트 측에서 직접 호출하거나 미들웨어, 플러그인, `setup()` 함수 등에서 사용된다.
+    ```javascript
+    showError({
+      statusCode: 404,
+      statusMessage: 'Page Not Found'
+    });
+    ```
+--- 
