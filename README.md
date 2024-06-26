@@ -7,6 +7,48 @@
 
 
 # 내용 정리
+
+### 프로젝트 생성
+
+---
+
+1. `nuxi`를 이용하여 프로젝트를 생성합니다.
+
+```json
+npx nuxi@latest init learn-nuxt-3
+```
+
+1. `cd learn-nuxt-3` 프로젝트 디렉터리로 이동
+2. `npm install` 의존성 패키지 설치
+3. `npm run dev` 프로젝트 실행
+
+💡 **nuxi 란?**
+
+- `npx nuxi build`와 `nuxt build`는 둘 다 Nuxt 3 애플리케이션을 빌드하는 명령어이지만, 약간의 차이가 있습니다.
+    1. **`npx nuxi build`**
+        - `nuxi`는 Nuxt 3에서 사용되는 공식 빌드 도구입니다.
+        - 이 명령어는 프로젝트에 종속성을 추가하지 않고도 `nuxi`를 실행할 수 있게 해주는 `npx`를 사용합니다. `npx`는 npm 패키지를 설치하지 않고도 일회성으로 실행할 수 있도록 도와줍니다.
+        - 최신 기능 및 최적화된 빌드 프로세스를 사용하여 프로덕션 빌드를 생성합니다.
+        
+        ```bash
+        npx nuxi build
+        ```
+        
+    2. **`nuxt build`**
+        - 이 명령어는 이전 버전의 Nuxt.js에서 사용되었던 빌드 명령어입니다.
+        - Nuxt 3에서도 여전히 호환성을 제공하기 위해 제공되지만, 공식적으로는 `nuxi`를 권장합니다.
+        - 이 명령어를 사용하려면 먼저 `nuxt` 패키지가 프로젝트의 의존성으로 설치되어 있어야 합니다.
+        
+        ```bash
+        nuxt build
+        ```
+        
+    
+    따라서, 새로운 프로젝트에서는 `npx nuxi build`를 사용하는 것이 권장되며, 이전 버전의 Nuxt.js 프로젝트에서는 `nuxt build`를 계속 사용할 수 있습니다.
+    
+</aside>
+
+--- 
 ## 4-2 Nuxt Plugins & Utils
 ### plugins
 - Nuxt는 자동으로 `plugins/` 디렉토리의 파일을 읽어와 Vue 애플리케이션 생성 시에 로드합니다.
@@ -261,6 +303,7 @@ https://ko.vuejs.org/guide/scaling-up/ssr#server-side-rendering-ssr
 - 하이드레이션을 통해 서버에서 렌더링된 HTML에 JavaScript를 추가하여 사용자 입력에 반응하거나 데이터를 동적으로 업데이트할 수 있다.
 
 ---
+# 5. Error Handling
 ## 5-1 에러 던지기 - createError Error Utilss
 ### 파라미터
 
@@ -531,3 +574,5 @@ definePageMeta({
 </script>
 ``` 
 --- 
+# 6. Route Middleware and Authentication
+## 6-1 Route Middleware 기초
