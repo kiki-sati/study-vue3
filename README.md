@@ -328,3 +328,74 @@ export default eventHandler(() => {
 ```
 
 참고 [Docs > Getting Started > Error Handling](https://nuxt3-docs.netlify.app/guide/views#error-handling)
+
+---
+## 에러 페이지 정의 (with useError, clearError)
+### Error Page 커스터마이징
+- 루트 디렉토리에 ~/error.vue 파일을 추가
+- 에러페이지라고 불리지만 route가 아니며  `~/pages `디렉토리에 위치해서는 안 된다.
+- 이와 같은 이유로 이 페이지에서는 `definePageMeta`를 사용해서는 안된다.
+
+### error 객체 제공 필드
+```json
+{
+  url: string
+  statusCode: number
+  statusMessage: string
+  message: string
+  description: string
+  data: any
+}
+```
+### 에러 객체 사용자 정의 필드 설정
+- 사용자 정의 필드에 오루가 있으면 손실되기에 데이터를 할당해야한다.
+
+  ```javascript
+  throw createError({
+    statusCode: 404,
+    statusMessage: 'Page Not Found',
+    data: {
+      myCustomField: true
+    }
+  })
+  ```
+  
+### Error Utils - useError
+- `useError` 컴포저블은 처리 중인 전역 Nuxt에러 객체를 반환한다.
+- 클라이언트 및 서버에서 모두 사용 할 수 있다.
+  ```javascript
+  const error = useError()
+  ``` 
+- 상태에 에러를 성정하고 컴포넌트 간에 반응적이면서 SSR에 친화적인 전역 Nuxt 오류를 생성한다.
+  - 속성
+    ```javascript
+    interface {
+      //  HTTP response status code
+      statusCode: number
+      // HTTP response status message
+      statusMessage: string
+      // Error message
+      message: string
+    }
+
+### Error Utils - clearError
+- pages, components, 그리고 plugins에서 clearError를 사용하여 모든 에러를 지우고 사용자를 `리디렉션`할 수 있다.
+  - 파라미터
+    - `opitons: { redirect?: string }`
+      - 선택적인 경로를 제공하여 사용자 리디렉션 가능
+        ```javascript
+        // 리디렉션 없이
+        clearError()
+      
+        // 리디렉션 포함
+        clearError({ redirect: '/homepage' })
+        ```
+      - 에러는 `useError()`를 사용하여 상태에 설정됨 
+      - `clearError` 컴포저블은 이 상태를 재설정하고 제공된 옵션으로 `app:error:cleared`훅 호출
+
+
+### 참고
+- [Get Started > Error Handling # Error Page](https://nuxt.com/docs/getting-started/error-handling#error-page)
+- [API > Utils > clearError](https://nuxt.com/docs/api/utils/clear-error)
+- [API > Utils > createError](https://nuxt.com/docs/api/utils/create-error)
+- [API > Composables > useError](https://nuxt.com/docs/api/composables/use-error)
