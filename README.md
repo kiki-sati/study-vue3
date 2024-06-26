@@ -518,3 +518,16 @@ export default defineNuxtPlugin(nuxtApp => {
 https://nuxt.com/docs/api/components/nuxt-error-boundary
 
 --- 
+## 5-6 Route Validation
+- 유효성 검사를 하기 위해 `definePageMeta()` 함수의 `validate` 속성을 사용할 수 있다.
+```javascript
+<script setup lang="ts">
+definePageMeta({
+  validate: async (route) => {
+    // id가 숫자로 이루어져 있는지 확인
+    return /^\\d+$/.test(route.params.id)
+  }
+})
+</script>
+``` 
+--- 

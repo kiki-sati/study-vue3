@@ -102,15 +102,19 @@ const route = useRoute();
 const courseSlug = route.params.courseSlug as string;
 const { course, prevCourse, nextCourse } = useCourse(courseSlug);
 
-if (!course) {
-  throw createError({
-    statusCode: 404,
-    statusMessage: 'Course not found',
-    // fatal: true,
-  });
-}
+// setup 함수 안에 있기 때문에 뷰가 렌더링 되는 시점에 검사함
+// if (!course) {
+//   throw createError({
+//     statusCode: 404,
+//     statusMessage: 'Course not found',
+//     // fatal: true,
+//   });
+// }
 
 console.log('[courseSlug].vue 컴포넌트 setup hooks');
+
+// 해당 함수는 컴파일이 완료된 시점에 setup 함수안에 존재하지 않는다.
+// 전역 네임스페이스에 있다.
 definePageMeta({
   // definePageMeta 는 밖에 있는 함수로 컴포넌트를 참조할 수 없음.
   key: (route) => route.fullPath,
@@ -118,6 +122,20 @@ definePageMeta({
   pageType: '',
   // keepalive: true, // 상태 유지(캐싱)
   alias: ['/lecture/:courseSlug'],
+  // 외부에 존재하기 때문에 컴포넌트가 렌더링 되기 전에 체크함
+  validate: (route) => {
+    const courseSlug = route.params.courseSlug as string;
+    const { course } = useCourse(courseSlug);
+    if (!course) {
+      // return false;
+      throw createError({
+        statusCode: 404,
+        statusMessage: 'Course not found',
+        // fatal: true,
+      });
+    }
+    return true;
+  },
 });
 
 const memo = ref('');
