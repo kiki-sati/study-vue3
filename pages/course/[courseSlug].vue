@@ -123,18 +123,21 @@ definePageMeta({
   // keepalive: true, // 상태 유지(캐싱)
   alias: ['/lecture/:courseSlug'],
   // 외부에 존재하기 때문에 컴포넌트가 렌더링 되기 전에 체크함
-  validate: (route) => {
+  // validate: (route) => {
+  middleware: (route) => {
     const courseSlug = route.params.courseSlug as string;
     const { course } = useCourse(courseSlug);
     if (!course) {
       // return false;
-      throw createError({
-        statusCode: 404,
-        statusMessage: 'Course not found',
-        // fatal: true,
-      });
+      return abortNavigation(
+        createError({
+          statusCode: 404,
+          statusMessage: 'Course not found',
+          // fatal: true,
+        }),
+      );
     }
-    return true;
+    // return true;
   },
 });
 

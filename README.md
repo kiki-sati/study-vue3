@@ -623,3 +623,66 @@ definePageMeta({
 --- 
 # 6. Route Middleware and Authentication
 ## 6-1 Route Middleware 기초
+### Middleware
+- 특정 라우트로 이동하기 전에 실행하고 싶은 코드를 추출하는 데 이상적이다.
+
+### Route Middleware 3가지 종류
+- Anonymous (or inline) Middleware
+  - 익명(또는 인라인) 라우트 미들웨어는 페이지에서 직접 정의
+- Named Middleware
+  - `middleware/` 에 배치되고 페이지에서 사용될 때  `astnchoronous import` (비동기로 가져옴)를 통해 자동으로 로드됨
+      - 라우트 미들웨어 이름은 케밥 케이스로 표기됨으로 `someMiddleware` ->` some-middleware` 가 된다.
+- Global Middleware
+  -  `middleware/` 디렉토리에 배치되어 (`.global` 접미사와 함께) 모든 라우트 변경 시 자동으로 실행
+
+> 라우트 미들웨어는 Nuxt 앱의 Vue 부분 내에서 실행된다. 비슷한 이름이지만, 이것들은 Nitro 서버 부분에서 실행되는 서버 미들웨어와 완전히 다르다.
+Route Middleware ≠ Server Middleware
+
+### validate 를 middleware로 리펙토링
+- `pages/course/[courseSlug].vue` - `validate` → `middleware`
+```javascript
+
+// ... 생략 ...
+definePageMeta({
+  key: (route) => route.fullPath,
+  // title: title.value, // 이렇게 하면 오류가 발생합니다.
+  title: 'My home page',
+  pageType: '',
+  // keepalive: true,
+  alias: ['/lecture/:courseSlug'],
+  // validate: (route) => {
+  middleware: (route) => {
+    const courseSlug = route.params.courseSlug as string;
+    const { course } = useCourse(courseSlug);
+    if (!course) {
+			// 1] client: protect, server: 404
+			// return false;
+
+			// 2] server: navigation
+      // if (process.server) {
+      //   return navigateTo('/');
+      // }
+
+			// 3] client: protect, server: error
+      return abortNavigation(
+        createError({
+          statusCode: 404,
+          statusMessage: 'Course not found',
+        }),
+      );
+    }
+    // return true;
+  },
+});
+// ... 생략 ...
+``` 
+|  | Client-side Rendering | Server-side Rendering |
+| --- | --- | --- |
+| abortNavigation() | 현재 페이지 탐색을 중단합니다. | 에러 페이지를 표시합니다. (404) |
+| abortNavigation(error) | 현재 페이지 탐색을 중단합니다. | 주어진 정보와 함께 에러 페이지를 표시합니다. |
+> 
+> validate은 라우트의 유효성을 확인하고 페이지를 로드하는 데 사용되는 반면, middleware는 페이지에 대한 추가적인 로직이나 데이터를 처리하는 데 사용됩니다.
+> 따라서 라우트 유효성 검사와 페이지에 대한 사용자 지정 동작을 구현할 때 적절한 것을 선택해야 합니다.
+### 참고
+https://nuxt.com/docs/guide/directory-structure/middleware
+--- 
