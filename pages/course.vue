@@ -35,7 +35,23 @@
         </q-card>
       </div>
       <div class="col">
-        <NuxtPage />
+        <!--        특정 UI에 에러를 별도 표시 하고 싶으면 아래처럼 NuxtErrorBoundary 사용-->
+        <NuxtErrorBoundary>
+          <NuxtPage />
+          <template #error="{ error }">
+            <div class="flex flex-center column q-py-xl">
+              <div class="text-h6 q-mb-lg">
+                {{ error }}
+              </div>
+              <q-btn
+                label="Reset"
+                color="positive"
+                no-caps
+                @click="error.value = null"
+              />
+            </div>
+          </template>
+        </NuxtErrorBoundary>
       </div>
     </div>
   </q-page>

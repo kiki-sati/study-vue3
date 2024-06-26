@@ -488,3 +488,33 @@ export default defineNuxtPlugin(nuxtApp => {
     });
     ```
 --- 
+## 5-5 클라이언트 오류 처리 (NuxtErrorBoundary)
+- 특정 UI에 오류 처리 할 때 사용
+![img_3.png](img_3.png)
+
+### 이벤트
+- 컴포넌트의 기본 슬롯에서 오류가 발생했을 때 처리됨.
+```html
+<template>
+  <NuxtErrorBoundary @error="logSomeError">
+    <!-- ... -->
+  </NuxtErrorBoundary>
+</template>
+```
+
+### 슬롯
+- 오류가 발생했을 때 표시할 대체 콘텐츠를 지정하는데 사용됨
+```html
+<template>
+  <NuxtErrorBoundary>
+    <!-- ... -->
+    <template #error="{ error }">
+      <p>오류가 발생했습니다: {{ error }}</p>
+    </template>
+  </NuxtErrorBoundary>
+</template>
+```
+### 참고
+https://nuxt.com/docs/api/components/nuxt-error-boundary
+
+--- 
