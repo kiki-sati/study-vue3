@@ -5,7 +5,12 @@ export default defineNuxtConfig({
   },
   modules: ['nuxt-quasar-ui'],
   quasar: {
-    /* */
+    plugins: ['Notify'],
+    config: {
+      notify: {
+        position: 'top-right',
+      },
+    },
   },
   imports: {
     presets: [
@@ -15,5 +20,5 @@ export default defineNuxtConfig({
       },
     ],
   },
-  ssr: true
+  ssr: true,
 });

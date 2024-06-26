@@ -136,7 +136,7 @@ const selectedLanguageName =
 
 ### utils
 
-> `utils/` 디렉토리를 사용하여 애플리케이션 전체에서 유틸리티 함수를 자동으로 가져올 수 있습니다.
+`utils/` 디렉토리를 사용하여 애플리케이션 전체에서 유틸리티 함수를 자동으로 가져올 수 있습니다.
 
 ---
 
@@ -330,7 +330,7 @@ export default eventHandler(() => {
 참고 [Docs > Getting Started > Error Handling](https://nuxt3-docs.netlify.app/guide/views#error-handling)
 
 ---
-## 에러 페이지 정의 (with useError, clearError)
+## 5-2 에러 페이지 정의 (with useError, clearError)
 ### Error Page 커스터마이징
 - 루트 디렉토리에 ~/error.vue 파일을 추가
 - 에러페이지라고 불리지만 route가 아니며  `~/pages `디렉토리에 위치해서는 안 된다.
@@ -393,9 +393,50 @@ export default eventHandler(() => {
       - 에러는 `useError()`를 사용하여 상태에 설정됨 
       - `clearError` 컴포저블은 이 상태를 재설정하고 제공된 옵션으로 `app:error:cleared`훅 호출
 
-
 ### 참고
 - [Get Started > Error Handling # Error Page](https://nuxt.com/docs/getting-started/error-handling#error-page)
 - [API > Utils > clearError](https://nuxt.com/docs/api/utils/clear-error)
 - [API > Utils > createError](https://nuxt.com/docs/api/utils/create-error)
 - [API > Composables > useError](https://nuxt.com/docs/api/composables/use-error)
+--- 
+## 5-3 Error Handling (with Lifecycle hooks)
+### Lifecyle Hooks
+- 애플리케이션의 다양한 단계에서 코드를 실행하거나 사용자 지정 로직을 삽입할 수 있는 지점들
+- 이 훅들은 앱의 초기화, 라우팅, 렌더링, 상태 변경, 에러 발생 등과 같은 중요한 이벤트에 효과적으로 끼어들 수 있게 한다.
+```javascript
+export default defineNuxtPlugin(nuxtApp => {
+	nuxtApp.hook('app:created', () => {
+		// 초기 vueApp 인스턴스가 생성될 때 호출됩니다.
+  });
+  nuxtApp.hook('vue:error', (err) => {
+    // vue 에러가 루트 컴포넌트에 전파될 때 호출됩니다.
+  })
+})
+```
+https://nuxt.com/docs/api/advanced/hooks
+https://nuxt.com/docs/guide/going-further/hooks
+
+### Error Handling
+- 사용자 정의 오류의 경우 페이지/컴포넌트의 setup 함수에서 호출하는 것이 좋다.
+- onErrorCaptured 컴포저블 또는 nuxt 플러그인에서 구성할 수 있는 vue:error 런타임 nuxt 후크를 사용 권장 
+```javascript
+export default defineNuxtPlugin(nuxtApp => {
+  nuxtApp.hook('vue:error', (err) => {
+    //
+  })
+})
+```
+- 에러 페이지 제거
+  - clearError 헬퍼 함수를 호출
+    - 선택적으로 리디렉션할 경로를 파라미터로 받는다. 
+
+
+> Node 16에서 에러페이지를 렌더링할 때 쿠키를 설정하면, 이전에 설정된 쿠기를 덮어쓸 수 있다. Node 16은 2023년 9월에 지원 종료되었으므로, 새로운 Node 버전을 사용하는 것이 좋다.
+
+### 참고
+ - [Get Started > Error Handling # Error Page](https://nuxt.com/docs/getting-started/error-handling#error-page)
+ - [Guide > Going > Lifecycle Hooks](https://nuxt.com/docs/guide/going-further/hooks)
+ - [API > Advanced > Lifecycle Hooks](https://nuxt.com/docs/api/advanced/hooks)
+ - [Quasar > Notify](https://quasar.dev/quasar-plugins/notify)
+
+--- 

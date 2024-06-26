@@ -106,7 +106,7 @@ if (!course) {
   throw createError({
     statusCode: 404,
     statusMessage: 'Course not found',
-    fatal: true,
+    // fatal: true,
   });
 }
 
@@ -116,7 +116,7 @@ definePageMeta({
   key: (route) => route.fullPath,
   title: 'My home page',
   pageType: '',
-  keepalive: true, // 상태 유지(캐싱)
+  // keepalive: true, // 상태 유지(캐싱)
   alias: ['/lecture/:courseSlug'],
 });
 
