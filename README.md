@@ -259,3 +259,72 @@ export default defineNuxtConfig({
 https://ko.vuejs.org/guide/scaling-up/ssr#server-side-rendering-ssr
 - Nuxt3에서 하이드레이션은 서버에서 렌더링된 HTML을 클라이언트에서 동적으로 완성하는 과정
 - 하이드레이션을 통해 서버에서 렌더링된 HTML에 JavaScript를 추가하여 사용자 입력에 반응하거나 데이터를 동적으로 업데이트할 수 있다.
+
+---
+## 5-1 에러 던지기 - createError Error Utilss
+### 파라미터
+
+- `err`
+    
+    ```jsx
+    createError({
+      cause, // 에러의 원인 (다른 에러 객체 또는 메시지 등)
+      data, // 추가적인 에러 데이터 (사용자 정의 데이터)
+      message, // 에러 메시지 (문제에 대한 간결한 설명)
+      name, // 에러의 이름 또는 유형 (예: 'ValidationError')
+      stack, // 에러 스택 트레이스 (발생한 위치와 호출 스택)
+      statusCode, // HTTP 상태 코드 (예: 404, 500)
+      statusMessage, // HTTP 상태 메시지 (예: 'Not Found', 'Internal Server Error')
+      fatal // 에러가 치명적인지 여부 (페이지를 완전히 중지시킬지 여부)
+    })
+    ```
+    
+
+### In **Vue App**
+
+`createError`로 생성된 오류를 던질 경우:
+
+- 서버 측에서는 전체 화면 오류 페이지를 트리거하며, `clearError`를 사용하여 해당 오류 페이지를 지울 수 있다.
+- 클라이언트 측에서는 처리할 수 있는 비치명적인 오류를 발생시킵니다. 만약 전체 화면 오류 페이지를 트리거해야 한다면, `fatal: true`로 설정할 수 있다.
+
+**예시**
+
+```jsx
+// pages/movies/[slug].vue
+<script setup lang="ts">
+const route = useRoute()
+const { data } = await useFetch(`/api/movies/${route.params.slug}`)
+if (!data.value) {
+  throw createError({
+		statusCode: 404,
+		statusMessage: '페이지를 찾을 수 없습니다'
+	})
+}
+</script>
+```
+클라이언트 측에서 만약 전체 화면 오류 페이지를 트리거해야 한다면, `fatal: true`로 설정할 수 있습니다.
+
+- 수정 `pages/course/[courseSlug].vue`
+    
+### In **API Routes**
+
+`createError`를 사용하여 서버 API Routes에서 오류 처리를 트리거합니다.
+
+- **API Routes란?**
+  - Nuxt 3에서 백엔드 엔드포인트(API)를 만들거나 데이터를 처리하기 위한 서버 측 로직을 작성하는 데 사용됩니다.
+  - API Routes를 사용하면 `/api` 디렉토리 내에 간단한 JavaScript 파일을 생성하여 API 엔드포인트를 정의할 수 있습니다. 이렇게 정의된 API는 Nuxt 애플리케이션 내에서 사용되거나 외부에서 접근할 수 있는 엔드포인트로 동작합니다. 
+  - 이를테면, `/api/users.js` 파일을 만들어 사용자 정보를 처리하는 간단한 API를 작성할 수 있습니다. 이 API는 서버 측에서 실행되면서 데이터를 동적으로 생성하거나 외부 데이터베이스와 상호 작용할 수 있습니다. 
+  - API Routes는 Nuxt 3에서 간편하게 생성하고 사용할 수 있어서, 백엔드 로직을 프론트엔드 애플리케이션과 통합하는 데 유용합니다.
+
+**예시:**
+
+```jsx
+export default eventHandler(() => {
+  throw createError({
+    statusCode: 404,
+    statusMessage: '페이지를 찾을 수 없습니다'
+  })
+})
+```
+
+참고 [Docs > Getting Started > Error Handling](https://nuxt3-docs.netlify.app/guide/views#error-handling)
