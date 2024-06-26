@@ -10,10 +10,10 @@
         </q-header>
       </template>
       <div class="q-my-xl text-center">
-        <div class="text-h4">레이아웃 재정의</div>
-        <p class="q-mt-sm text-grey-8">
-          Admin Layout 실습을 위한 페이지 입니다.
-        </p>
+        <PageTitle title="레이아웃 재정의" />
+        <PageDescription
+          description="Admin Layout 실습을 위한 페이지 입니다."
+        />
       </div>
     </NuxtLayout>
   </div>
