@@ -687,4 +687,19 @@ definePageMeta({
 https://nuxt.com/docs/guide/directory-structure/middleware
 
 --- 
-## 6-2 Authentication 로그인 UI 만들기
+## 미들웨어 실행 시점
+- 서버사이드 한번 실행 -> 클라이언트에서 다시 실행
+- 해당 동작 피하고 싶은 경우 아래 코드 삽입
+```javascript
+// middleware/example.ts
+export default defineNuxtRouteMiddleware(to => {
+  // 서버에서 미들웨어 건너뛰기
+  if (process.server) return
+  // 클라이언트 측에서 미들웨어 전체 건너뛰기
+  if (process.client) return
+  // 또는 초기 클라이언트 로드에서만 미들웨어 건너뛰기
+  const nuxtApp = useNuxtApp()
+  if (process.client && nuxtApp.isHydrating && nuxtApp.payload.serverRendered) return
+})
+
+```
