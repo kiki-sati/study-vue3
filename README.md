@@ -116,7 +116,7 @@ npx nuxi@latest init learn-nuxt-3
 
 ---
 
-```jsx
+```javascript
 // plugins/hello.ts
 export default defineNuxtPlugin(nuxtApp => {
 	// nuxtApp으로 어떤 작업을 할 수 있습니다.
@@ -127,7 +127,7 @@ export default defineNuxtPlugin(nuxtApp => {
 
 고급 사용 사례를 위해 객체 구문을 사용하여 플러그인을 정의하는 것도 가능합니다.
 
-```jsx
+```javascript
 export default defineNuxtPlugin({
   name: 'my-plugin',
   enforce: 'pre', // 또는 'post'
@@ -235,7 +235,7 @@ const selectedLanguageName =
 
 **방법 1:** **named export** 사용
 
-```jsx
+```javascript
 // utils/index.ts
 export const { format: formatNumber } = Intl.NumberFormat('en-GB', {
 	notation: 'compact',
@@ -245,7 +245,7 @@ export const { format: formatNumber } = Intl.NumberFormat('en-GB', {
 
 **방법 2: default export** 사용
 
-```jsx
+```javascript
 // utils/random-entry.ts 또는 utils/randomEntry.ts
 // randomEntry()로 사용 가능합니다.
 export default function (arr: Array<any>) {
@@ -356,7 +356,7 @@ https://ko.vuejs.org/guide/scaling-up/ssr#server-side-rendering-ssr
 
 - `err`
     
-    ```jsx
+    ```javascript
     createError({
       cause, // 에러의 원인 (다른 에러 객체 또는 메시지 등)
       data, // 추가적인 에러 데이터 (사용자 정의 데이터)
@@ -379,7 +379,7 @@ https://ko.vuejs.org/guide/scaling-up/ssr#server-side-rendering-ssr
 
 **예시**
 
-```jsx
+```javascript
 // pages/movies/[slug].vue
 <script setup lang="ts">
 const route = useRoute()
@@ -408,7 +408,7 @@ if (!data.value) {
 
 **예시:**
 
-```jsx
+```javascript
 export default eventHandler(() => {
   throw createError({
     statusCode: 404,
@@ -703,3 +703,75 @@ export default defineNuxtRouteMiddleware(to => {
 })
 
 ```
+
+### Global & Dynamic Middleware
+### **Middleware 실행 순서**
+
+Middleware는 다음과 같은 순서로 실행됩니다.
+
+1. **Global Middleware:** 모든 라우트에 적용되는 Middleware입니다.
+2. **Page defined middleware order:** 페이지 정의된 미들웨어 순서 (배열 구문으로 여러 미들웨어를 선언한 경우)
+
+예를 들어, 다음과 같은 미들웨어 및 컴포넌트가 있다고 가정합니다.
+
+```bash
+middleware/
+--| analytics.global.ts
+--| setup.global.ts
+--| auth.ts
+```
+
+```html
+// **pages/profile.vue:**
+<script setup lang="ts">
+definePageMeta({
+  middleware: [
+    function (to, from) {
+      // Custom inline middleware
+    },
+    'auth',
+  ],
+});
+</script>
+```
+
+이 경우 다음과 같은 순서로 미들웨어가 실행됩니다.
+
+1. **analytics.global.ts**
+2. **setup.global.ts**
+3. **Custom inline middleware**
+4. **auth.ts**
+
+### **Global Middleware 순서 지정**
+
+기본적으로 Global Middleware는 파일 이름을 기준으로 알파벳순으로 실행됩니다.
+
+하지만 특정 순서를 정의하고 싶을 때가 있습니다. 예를 들어, 마지막 시나리오에서 **setup.global.ts** 가 **analytics.global.ts** 보다 먼저 실행되어야 할 수도 있습니다. 그러한 경우 Global Middleware 앞에 '알파벳순' 번호를 붙이는 것이 좋습니다.
+
+```bash
+middleware/
+--| 01.setup.global.ts
+--| 02.analytics.global.ts
+--| auth.ts
+```
+
+만약 '알파벳순' 번호를 처음 사용한다면 파일 이름은 숫자 값으로 정렬되지 않고 문자열로 정렬된다는 점을 기억하십시오. 예를 들어, **10.new.global.ts** 는 **2.new.global.ts** 보다 먼저 실행됩니다. 이것이 예제에서 한 자리 숫자 앞에 **0** 를 붙이는 이유입니다.
+
+### **동적으로 미들웨어 추가**
+
+---
+
+플러그인 내에서 `addRouteMiddleware()` 헬퍼 함수를 사용하여 전역 또는 명명된 라우트 미들웨어를 수동으로 추가할 수 있습니다.
+
+```javascript
+export default defineNuxtPlugin(() => {
+  addRouteMiddleware('global-test', () => {
+    console.log('this global middleware was added in a plugin and will be run on every route change')
+  }, { global: true })
+
+  addRouteMiddleware('named-test', () => {
+    console.log('this named middleware was added in a plugin and would override any existing middleware of the same name')
+  })
+})
+```
+--- 
