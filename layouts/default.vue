@@ -106,6 +106,8 @@ const languages = ref<Language[]>([
 // 외부 라이브러리는 autoimport 지원 x 그래서 nuxt.config.ts에 설정 해주면 가능
 const { locale } = useI18n();
 const selectedLanguageName = computed(
-  () => languages.value.find((lang) => lang.code == locale.value)?.name,
+  () => languages.value.find((lang) => lang.code === locale.value)?.name,
 );
+
+watch(locale, (val) => (useCookie('locale').value = val));
 </script>
