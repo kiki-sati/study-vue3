@@ -775,3 +775,57 @@ export default defineNuxtPlugin(() => {
 })
 ```
 --- 
+# 7. State Management
+## 7-1 Nuxt 상태관리 : useState()
+### useState()
+- `ref` 대신 사용 가능, SSR 친화적 
+- 서버 렌더링 후 유지되고 고유 키를 사용하여 모튼 컴포넌트에 공유된다. (동일한 반응형 상태 공유)
+  - useState 내부의 데이터는 JSON으로 직렬화되므로 클래스, 함수, 심볼 등 직렬화할 수 없는 어떤 것도 포함하지 않는 것이 중요
+
+### clearNuxtState()
+- `useState` 컴포저블을 사용하여 생성된 캐시된 상태를 삭제한다.
+- 특정 상태 또는 모든 상태를 삭제하는 데 사용 가능
+
+**타입:**
+
+**TypeScript**
+
+```tsx
+clearNuxtState(keys?: string | string[] | ((key: string) => boolean)): void
+```
+
+**매개변수:**
+
+- **keys (선택적):** 삭제할 `useState` 키 하나 또는 키 배열. 키를 지정하지 않으면 모든 상태가 삭제.
+- **키 선택 옵션:**
+    - **문자열:** 삭제할 단일 키 지정
+    - **문자열 배열:** 여러 개의 키를 삭제하도록 지정
+    - **함수:** 각 키를 검사하여 삭제할지 여부를 결정하는 함수. 함수는 키를 인자로 받고 `true` 또는 `false`를 반환해야 함.
+
+**사용 시점:**
+
+- `useState` 상태를 무효화해야 하는 경우
+- 새로운 데이터로 상태를 업데이트하기 전에 이전 데이터를 지우고 싶은 경우
+- `useState` 상태가 더 이상 필요 없는 경우
+
+**예시:**
+
+**TypeScript**
+
+```tsx
+// 모든 상태 삭제
+clearNuxtState();
+
+// 특정 키의 상태 삭제
+clearNuxtState('counter');
+
+// 조건에 따라 키 삭제
+clearNuxtState((key) => key.startsWith('user'));
+
+```
+
+**주의:**
+
+- `clearNuxtState`는 **클라이언트 측에서만** 작동
+- `clearNuxtState`는 **SSR 시점에서 캐시된 상태만 삭제한다.** 서버 측 렌더링 중에 `useState`를 사용하여 설정된 상태는 영향을 받지 않다.
+- `clearNuxtState`를 사용하면 애플리케이션 성능이 저하될 수 있다. 성능 문제가 발생하는 경우 특정 키만 삭제하는 것이 좋다.
