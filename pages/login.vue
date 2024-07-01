@@ -13,7 +13,7 @@ definePageMeta({
   middleware: ['guest-only'],
 });
 const handleLoginSuccess = async () => {
-  const { isAdmin } = useAuthUser();
+  const isAdmin = useAdmin();
   const redirect = isAdmin.value ? '/admin' : '/';
 
   // navigateTo 는 비동기 함수이기 때문에 async, await를 넣어줘야 한다.

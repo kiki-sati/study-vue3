@@ -3,7 +3,7 @@ export default defineNuxtConfig({
   typescript: {
     typeCheck: true,
   },
-  modules: ['nuxt-quasar-ui'],
+  modules: ['nuxt-quasar-ui', '@pinia/nuxt'],
   quasar: {
     plugins: ['Notify'],
     config: {

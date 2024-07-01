@@ -1,7 +1,10 @@
+import { getUser } from './userData';
 import type { UserWithoutPassword } from '~/types/user';
+import { useAuthUser } from '~/composables/auth/useAuthUser';
 
 export const useAuth = () => {
-  const { authUser } = useAuthUser();
+  // const { authUser } = useAuthUser();
+  const authUser = useAuthUser();
 
   const signIn = (email: string, password: string) => {
     const foundUser = getUser(email, password);

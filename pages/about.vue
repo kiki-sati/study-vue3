@@ -38,6 +38,14 @@
             <q-btn label="counter" @click="clearNuxtState()" />
           </div>
         </div>
+        <div class="q-gutter-y-sm q-mt-md">
+          <div class="text-subtitle1 text-weight-bold">useCounterStore()</div>
+          <div>count: {{ count }}</div>
+          <div>doubleCount: {{ doubleCount }}</div>
+          <div>
+            <q-btn label="counter" @click="counterStore.increment()" />
+          </div>
+        </div>
       </div>
     </div>
   </q-page>
@@ -48,4 +56,8 @@
 // 파라미터2 : 초기 값
 const counter = useState<number>('counter', () => 1);
 const sameCounter = useState<number>('counter');
+
+// pinia에서 auto import를 지원해준다.
+const counterStore = useCounterStore();
+const { count, doubleCount } = storeToRefs(counterStore);
 </script>
