@@ -898,3 +898,22 @@ interface UserInfo {
 ```
 
 여기서는 초기에 빈 리스트를 위한 경우나 아직 로드되지 않은 데이터를 다룰 때 명시적인 캐스팅을 하는 것이 필요한 상황입니다.
+--- 
+
+### pinia 상태 유지 플러그인 설치
+1. pinia-plugin-persistedstate 설치
+    
+    ```tsx
+    npm i -D @pinia-plugin-persistedstate/nuxt
+    ```
+    
+2. `nuxt.config.js` 설정
+    
+    ```tsx
+    export default defineNuxtConfig({
+      modules: [
+        '@pinia/nuxt', // needed
+        '@pinia-plugin-persistedstate/nuxt',
+      ]
+    })
+    ```
