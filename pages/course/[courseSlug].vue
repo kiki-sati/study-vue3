@@ -100,7 +100,7 @@ import { useCourse } from '~/composables/useCourse';
 
 const route = useRoute();
 const courseSlug = route.params.courseSlug as string;
-const { course, prevCourse, nextCourse } = useCourse(courseSlug);
+const { course, prevCourse, nextCourse } = await useCourse(courseSlug);
 
 // setup 함수 안에 있기 때문에 뷰가 렌더링 되는 시점에 검사함
 // if (!course) {
@@ -124,9 +124,9 @@ definePageMeta({
   alias: ['/lecture/:courseSlug'],
   // 외부에 존재하기 때문에 컴포넌트가 렌더링 되기 전에 체크함
   // validate: (route) => {
-  middleware: (route) => {
+  middleware: async (route) => {
     const courseSlug = route.params.courseSlug as string;
-    const { course } = useCourse(courseSlug);
+    const { course } = await useCourse(courseSlug);
     if (!course) {
       // return false;
       return abortNavigation(
