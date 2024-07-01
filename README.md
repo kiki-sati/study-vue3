@@ -829,3 +829,22 @@ clearNuxtState((key) => key.startsWith('user'));
 - `clearNuxtState`는 **클라이언트 측에서만** 작동
 - `clearNuxtState`는 **SSR 시점에서 캐시된 상태만 삭제한다.** 서버 측 렌더링 중에 `useState`를 사용하여 설정된 상태는 영향을 받지 않다.
 - `clearNuxtState`를 사용하면 애플리케이션 성능이 저하될 수 있다. 성능 문제가 발생하는 경우 특정 키만 삭제하는 것이 좋다.
+
+## 7-2 useRequestHeaders 컴포저블
+- useRequestHeaders를 사용하여 들어오는 요청 헤더에 액세스함 
+- pages, components, plugins 내에서 들어오는 요청 헤더에 액세스하기 위한 내장 컴포저블
+```javascript
+// 모든 요청 헤더를 가져옵니다.
+const headers = useRequestHeaders()
+
+// 쿠키 요청 헤더를 가져옵니다.
+const headers = useRequestHeaders(['cookie'])
+```
+- 예제
+```javascript
+<script setup lang="ts">
+const { data } = await useFetch('/api/confidential', {
+  headers: useRequestHeaders(['authorization'])
+})
+</script>
+```
