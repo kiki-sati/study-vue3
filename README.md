@@ -848,3 +848,53 @@ const { data } = await useFetch('/api/confidential', {
 })
 </script>
 ```
+## Pinia - Typescript
+
+---
+
+상태를 TS와 호환되도록 만들려면 많은 일을 할 필요가 없습니다. 엄격한 모드([**`strict`**](https://www.typescriptlang.org/tsconfig#strict)) 또는 최소한 [**`noImplicitThis`**](https://www.typescriptlang.org/tsconfig#noImplicitThis)가 활성화되어 있는지 확인하고, Pinia는 자동으로 상태의 타입을 추론합니다! 그러나 몇 가지 경우에는 명시적인 캐스팅이 필요할 수 있습니다.
+
+```tsx
+export const useUserStore = defineStore('user', {
+  state: () => {
+    return {
+      // 초기에 빈 리스트를 위한 경우
+      userList: [] as UserInfo[],
+      // 아직 로드되지 않은 데이터를 위한 경우
+      user: null as UserInfo | null,
+    }
+  },
+})
+
+interface UserInfo {
+  name: string
+  age: number
+}
+
+```
+
+만약 원한다면, 상태를 인터페이스로 정의하고 state()의 반환 값에 유형을 명시할 수 있습니다:
+
+```tsx
+interface State {
+  userList: UserInfo[]
+  user: UserInfo | null
+}
+
+export const useUserStore = defineStore('user', {
+  state: (): State => {
+    return {
+      userList: [],
+      user: null,
+    }
+  },
+})
+
+interface UserInfo {
+  name: string
+  age: number
+}
+
+```
+
+여기서는 초기에 빈 리스트를 위한 경우나 아직 로드되지 않은 데이터를 다룰 때 명시적인 캐스팅을 하는 것이 필요한 상황입니다.
