@@ -109,7 +109,7 @@ npx nuxi@latest init learn-nuxt-3
 ---| bar/
 -----| baz.ts    // 스캔되지 않는 플러그인
 -----| foz.vue   // 스캔되지 않는 Vue 파일
------| index.ts  // 현재는 스캔되고 있지만, 사용이 권장되지 않는(deprecated) 상태인 플러그인입니다.
+-----| index.get.ts  // 현재는 스캔되고 있지만, 사용이 권장되지 않는(deprecated) 상태인 플러그인입니다.
 ``` 
 
 ### 플러그인 만들어서 쓰기
@@ -236,7 +236,7 @@ const selectedLanguageName =
 **방법 1:** **named export** 사용
 
 ```javascript
-// utils/index.ts
+// utils/index.get.ts
 export const { format: formatNumber } = Intl.NumberFormat('en-GB', {
 	notation: 'compact',
 	maximumFractionDigits: 1
@@ -917,3 +917,41 @@ interface UserInfo {
       ]
     })
     ```
+   
+---
+# 8. Server Routes - Course API
+```shell
+// 디렉토리 구조
+-| server/
+---| api/
+-----| hello.ts      # /api/hello 경로에 매핑됩니다.
+---| routes/
+-----| bonjour.ts    # /bonjour 경로에 매핑됩니다.
+---| middleware/
+-----| log.ts        # 모든 요청을 기록합니다.
+```
+
+### Catch-all Route
+
+Catch-all routes는 fallback route 처리에 유용합니다. 예를 들어, `~/server/api/foo/[...].ts`라는 파일을 만들면 `/api/foo/bar/baz`와 같은 모든 요청에 대한 캐치올 라우트가 등록됩니다.
+
+```jsx
+// server/api/foo/[...].ts
+export default defineEventHandler((event) => {
+  // event.context.path로 라우트 경로 가져오기: '/api/foo/bar/baz'
+  // event.context.params._로 라우트 세그먼트 가져오기: 'bar/baz'
+  return `Default foo handler`
+})
+
+```
+
+캐치올 라우트에 이름을 설정하려면 `~/server/api/foo/[...slug].ts`와 같이 사용하고 `event.context.params.slug`을 통해 액세스할 수 있습니다.
+
+```jsx
+// server/api/foo/[...slug].ts
+export default defineEventHandler((event) => {
+  // event.context.params.slug로 라우트 세그먼트 가져오기: 'bar/baz'
+  return `Default foo handler`
+})
+
+```

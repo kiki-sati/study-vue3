@@ -1,0 +1,13 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### index. get
+GET http://localhost:3000/api/courses
+
+
+### [courseSlug].get.ts
+GET http://localhost:3000/api/courses/javascript
+
+### [...]
+GET http://localhost:3000/api/cqwe
