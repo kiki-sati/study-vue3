@@ -4,6 +4,7 @@ export const useAuthStore = defineStore(
   'auth',
   () => {
     const authUser = ref<Maybe<UserWithoutPassword>>();
+
     const signIn = async (email: string, password: string) => {
       const data = await $fetch<{ user: UserWithoutPassword }>('/auth/login', {
         method: 'POST',
@@ -26,8 +27,9 @@ export const useAuthStore = defineStore(
 
     const setUser = (user: Maybe<UserWithoutPassword>) =>
       (authUser.value = user);
+
     const signOut = async () => {
-      await $fetch('auth/logout', { method: 'POST' });
+      await $fetch('/auth/logout', { method: 'POST' });
       setUser(null);
     };
 
@@ -51,6 +53,8 @@ export const useAuthStore = defineStore(
   },
   {
     persist: true,
-    /* { storage: persistedState.localStorage } */
+    // persist: {
+    //   storage: persistedState.localStorage,
+    // },
   },
 );

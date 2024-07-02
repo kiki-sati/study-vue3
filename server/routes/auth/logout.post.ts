@@ -1,6 +1,9 @@
 export default defineEventHandler((event) => {
-  deleteCookie(event, '__user');
-  return {
-    user: null,
-  };
+  const user = event.context.user;
+
+  if (!user) {
+    return { user: null };
+  }
+
+  return { user };
 });
