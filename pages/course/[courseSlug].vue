@@ -1,5 +1,9 @@
 <template>
   <div>
+    <!--    <Head>
+      <Title>{{ title }}</Title>
+      <Meta name="description" :content="description" />
+    </Head>-->
     <AppCard>
       <template #header>
         <div class="text-h5 text-weight-medium">{{ course?.title }}</div>
@@ -101,6 +105,14 @@ import { useCourse } from '~/composables/useCourse';
 const route = useRoute();
 const courseSlug = route.params.courseSlug as string;
 const { course, prevCourse, nextCourse } = await useCourse(courseSlug);
+
+// const title = computed(() => course?.title);
+// const description = computed(() => course?.content);
+
+useSeoMeta({
+  title: () => course?.title || '',
+  description: () => course?.content,
+});
 
 // setup 함수 안에 있기 때문에 뷰가 렌더링 되는 시점에 검사함
 // if (!course) {

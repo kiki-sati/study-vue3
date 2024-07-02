@@ -10,6 +10,11 @@ const description = ref(
 );
 useSeoMeta({
   title,
+  titleTemplate: (titleChunk) => {
+    return titleChunk
+      ? `${titleChunk} - 짐토딩 Vue & Nuxt 강의`
+      : '짐토딩 Vue & Nuxt 강의';
+  },
   description,
   ogTitle: title,
   ogDescription: description,
