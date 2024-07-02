@@ -11,3 +11,21 @@ GET http://localhost:3000/api/courses/javascript
 
 ### [...]
 GET http://localhost:3000/api/cqwe
+
+### login.post
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+  "email": "user@gmail.com",
+  "password": "qwer1234"
+}
+
+### logout.post
+POST http://localhost:3000/auth/logout
+Content-Type: application/json
+
+### user.get
+GET http://localhost:3000/auth/user
+Content-Type: application/json
+
