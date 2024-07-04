@@ -1,12 +1,13 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   devtools: { enabled: true },
-
   modules: [
     "@nuxt/ui",
+    "nuxt-server-utils",
   ],
 
   ui: {},
-
-  compatibilityDate: "2024-07-03",
-})
+  nuxtServerUtils: {
+    mongodbUri: process.env.MONGODB_URI,
+  },
+});
