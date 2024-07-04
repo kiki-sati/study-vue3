@@ -1,0 +1,14 @@
+### GET request to example server
+GET https://examples.http-client.intellij.net/get
+    ?generated-in=IntelliJ IDEA
+
+### auth/signup
+POST http://localhost:3000/api/auth/signup
+Content-Type: application/json
+
+{
+  "name": "김아름",
+  "email": "name3@navem.com",
+  "password": "qwer1234567",
+  "passwordConfirm": "qwer1234567"
+}
