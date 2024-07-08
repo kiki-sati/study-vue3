@@ -1,32 +1,16 @@
 <template>
-  <div class="grid lg:grid-cols-2 h-screen">
+  <WrapperAuth title="계정에 로그인 하세요">
+    <UForm :state="formState" :schema="SigninSchema" @submit="handleSignin">
+      <UFormGroup class="mb-4" name="email" label="Email">
+        <UInput v-model="formState.email" type="email"></UInput>
+      </UFormGroup>
+      <UFormGroup class="mb-4" name="password" label="Password">
+        <UInput v-model="formState.password" type="password"></UInput>
+      </UFormGroup>
 
-    <div class="left place-self-center w-full px-8 md:px-16 lg:px-24 xl:px-36 2xl:px-52 ">
-      <div class="header text-center mb-6">
-        <div class="flex justify-center">
-          <Logo/>
-        </div>
-        <h1 class="text-xl font-bold mt-4">로그인 하세요</h1>
-      </div>
-      <!--    Form-->
-      <UCard class="mt-8">
-        <UForm :state="formState" :schema="SigninSchema" @submit="handleSignin">
-          <UFormGroup class="mb-4" name="email" label="Email">
-            <UInput v-model="formState.email" type="email"></UInput>
-          </UFormGroup>
-          <UFormGroup class="mb-4" name="password" label="Password">
-            <UInput v-model="formState.password" type="password"></UInput>
-          </UFormGroup>
-
-          <UButton type="submit" :loading="isLoading" block>로그인</UButton>
-        </UForm>
-      </UCard>
-      <!--    ./Form-->
-    </div>
-
-    <div class="right hidden lg:block"></div>
-
-  </div>
+      <UButton type="submit" :loading="isLoading" block>로그인</UButton>
+    </UForm>
+  </WrapperAuth>
 </template>
 
 <script setup lang="ts">
@@ -47,17 +31,21 @@ async function handleSignin(event: FormSubmitEvent<z.output<typeof SigninSchema>
 
   try {
     isLoading.value = true
-    await signIn('credentials', {
+    const res = await signIn('credentials', {
       email: event.data.email,
       password: event.data.password,
       redirect: false
     });
-    await useRouter().push('/');
+
+    // @ts-expect-error
+    if (!res.error) {
+      useRouter().push('/')
+    }
 
   } catch (e) {
 
   } finally {
-    isLoading.value = true
+    isLoading.value = false
   }
 
 }

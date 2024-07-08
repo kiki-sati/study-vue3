@@ -8,7 +8,7 @@ Content-Type: application/json
 
 {
   "name": "김아름",
-  "email": "name3@navem.com",
+  "email": "name@nave.com",
   "password": "qwer1234567",
   "passwordConfirm": "qwer1234567"
 }

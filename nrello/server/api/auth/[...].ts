@@ -25,8 +25,8 @@ export default NuxtAuthHandler({
             email: string,
             password: string,
         }){
-        // 로그인 login
-            const user = await User.findOne({email: credentials.email});
+            // 로그인 login
+            const user = await User.findOne({email: credentials.email}).select("+password");
 
             if (!user) {
             return null
