@@ -46,15 +46,39 @@ async function handlerForm(
   event: FormSubmitEvent<z.output<typeof BoardSchema>>
 ) {
   try {
-    isLoading.value = true;
-    await useFetch("/api/boards", {
+    isLoading.value = true; // 로딩 상태 시작
+
+    if (props.type === "update" && props.initialData?._id) {
+      await useFetch(`/api/boards/${props.initialData._id}`, {
+        method: "PUT",
+        body: event.data,
+        watch: false,
+      });
+
+      props.onUpdate?.();
+
+      useToast().add({
+        title: "보드 수정",
+      });
+
+      return;
+    }
+
+    const response = await useFetch("/api/boards", {
       method: "POST",
       body: event.data,
       watch: false,
     });
-  } catch (e) {
+    console.log("API 요청 성공:", response);
+    props.onCreate?.();
+
+    useToast().add({
+      title: "보드 생성",
+    });
+  } catch (error) {
+    console.error("API 요청 실패:", error);
   } finally {
-    isLoading.value = false;
+    isLoading.value = false; // 로딩 상태 종료
   }
 }
 </script>

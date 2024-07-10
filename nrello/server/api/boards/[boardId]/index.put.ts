@@ -10,12 +10,18 @@ export default defineEventHandler(async (event) => {
   }
 
   const body = await readBody(event);
-  Validator.validateSchema(BoardSchema, body);
+  Validator.validateSchema(BoardSchema.partial(), body);
 
-  const board = await Board.create({
-    ...body,
-    owner: user._id,
-  });
+  const boardId = getRouterParam(event, "boardId");
+  const board = await Board.findOneAndUpdate(
+    {
+      _id: boardId,
+      owner: user._id,
+    },
+    {
+      $set: body,
+    }
+  );
 
   return board;
 });

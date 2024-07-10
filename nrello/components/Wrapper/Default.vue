@@ -2,12 +2,12 @@
   <div>
     <main class="my-4">
       <header
-        class="p-2 border-b dark:border-gray-700 bg-white dark:bg-gray-800"
+        class="p-2 border-b dark:border-gray-700 bg-white dark:bg-gray-800 mb-4"
       >
         <UContainer>
           <div class="flex justify-between">
             <NuxtLink to="/">
-              <UIcon class="w-8 h-8" name=""></UIcon>
+              <Logo class="w-8 h-8"></Logo>
             </NuxtLink>
             <div class="inline-flex justify-end gap-4 items-center">
               <slot name="actions"></slot>
