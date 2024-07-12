@@ -3,6 +3,9 @@
     <UFormGroup class="mb-4" label="Name" name="name">
       <UInput v-model="formState.name"></UInput>
     </UFormGroup>
+    <UFormGroup class="mb-4" label="Cover Image" name="coverImage">
+      <ImagePicker v-model="formState.coverImage"></ImagePicker>
+    </UFormGroup>
     <UButton :loading="isLoading" block type="submit">
       {{ type === "create" ? "Create Board" : "Update Board" }}
     </UButton>

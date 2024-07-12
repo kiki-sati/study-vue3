@@ -19,7 +19,6 @@ export default NuxtAuthHandler({
     CredentialsProvider.default({
       name: "credentials",
       origin: useRuntimeConfig().auth.origin,
-
       async authorize(credentials: { email: string; password: string }) {
         // 로그인 login
         const user = await User.findOne({ email: credentials.email }).select(
@@ -62,6 +61,8 @@ export default NuxtAuthHandler({
         ...session.user,
         ...refreshedUser,
       };
+
+      console.log(session);
 
       return session;
     },

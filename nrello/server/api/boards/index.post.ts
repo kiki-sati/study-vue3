@@ -3,6 +3,7 @@ import BoardSchema from "~/schemas/Board.schema";
 import { Board } from "~/server/models/Board.model";
 
 export default defineEventHandler(async (event) => {
+  // auth middlewate에 저장된 세션 정보 가져옴
   const user = event.context.user;
 
   if (!user || !user._id) {

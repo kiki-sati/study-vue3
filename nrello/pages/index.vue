@@ -4,19 +4,17 @@
       <UButton size="xs" @click="showCreateBoard = true">Create board</UButton>
     </template>
     <div class="grid grid-cols-3 lg:grid-cols-4 gap-4">
-      <div
+      <BoardCard
         v-for="board in data"
         :key="board._id"
-        class="bg-white dark:bg-gray-800 rounded-lg border shadow p-2 text-center dark:border-gray-700"
-        @click="
+        :board="board"
+        :onEdit="
           () => {
             selectedBoard = board;
             showCreateBoard = true;
           }
         "
-      >
-        {{ board.name }}
-      </div>
+      ></BoardCard>
     </div>
 
     <USlideover v-model="showCreateBoard">
