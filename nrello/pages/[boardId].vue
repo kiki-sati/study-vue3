@@ -59,6 +59,9 @@ if (!data.value) {
   });
 }
 
+// 변경사항 발생 시 새로고침
+provide("board-refresh", refresh);
+
 const selectedList = ref<ListDocument | undefined>();
 const showListCreate = ref(false);
 </script>
