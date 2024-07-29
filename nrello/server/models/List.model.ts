@@ -1,5 +1,4 @@
-import { Schema, model, Document } from "mongoose";
-import { type } from "os";
+import { type Document, Schema, model } from "mongoose";
 
 export interface ListDocument extends Document {
   name: string;

@@ -22,7 +22,6 @@ export default defineNuxtConfig({
   nuxtServerUtils: {
     mongodbUri: process.env.MONGODB_URI,
   },
-
   auth: {
     baseURL: process.env.AUTH_ORIGIN,
     provider: {

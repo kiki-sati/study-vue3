@@ -61,9 +61,6 @@ export default NuxtAuthHandler({
         ...session.user,
         ...refreshedUser,
       };
-
-      console.log(session);
-
       return session;
     },
   },

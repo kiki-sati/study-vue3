@@ -16,7 +16,7 @@
     <h1 class="text-3xl font-semibold mb-4 inline-block">{{ data.name }}</h1>
 
     <!--    List Container-->
-    <ListContainer :list="data.lists"></ListContainer>
+    <ListContainer :board-id="(boardId as string)" :lists="data.lists" />
     <!--    // List Container-->
 
     <USlideover v-model="showListCreate">
@@ -27,7 +27,7 @@
 
       <div class="p-4">
         <FormList
-          :board-Id="boardId"
+          :board-Id="(boardId as string)"
           :initial-data="selectedList"
           :on-create="
             () => {
@@ -45,7 +45,6 @@
 <script lang="ts" setup>
 import type { ListDocument } from "~/server/models/List.model";
 import type { BoardDocument } from "~/server/models/Board.model";
-import { _backgroundPosition } from "#tailwind-config/theme";
 
 const { boardId } = useRoute().params;
 

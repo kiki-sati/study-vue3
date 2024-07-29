@@ -1,4 +1,5 @@
-import { Schema, model, Document } from "mongoose";
+import { Schema, model } from "mongoose";
+import type { Document } from "mongoose";
 import { ListDocument } from "~/server/models/List.model";
 
 export interface BoardDocument extends Document {
@@ -22,7 +23,7 @@ const boardSchema = new Schema(
     ],
     owner: {
       type: Schema.Types.ObjectId,
-      ref: "List",
+      ref: "User",
     },
     coverImage: {
       type: String,

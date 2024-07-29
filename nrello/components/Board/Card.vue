@@ -39,7 +39,7 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-const refreshBoard = inject("refresh-boards") as () => void;
+//const refreshBoard = inject("refresh-boards") as () => void;
 
 const actions = ref([
   [
