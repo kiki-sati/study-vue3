@@ -28,8 +28,24 @@ export const useList = (boardId: string) => {
     }
   }
 
+  async function update(listId: string, data: Partial<ListDocument>) {
+    try {
+      await useFetch(`/api/lists/${listId}`, {
+        method: "PUT",
+        body: data,
+        watch: false,
+      });
+    } catch (e: any) {
+      useToast().add({
+        title: "오류",
+        description: e.message || "문제가 발생하였습니다.",
+      });
+    }
+  }
+
   return {
     handleSort,
     destroy,
+    update,
   };
 };

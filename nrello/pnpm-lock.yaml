@@ -29,6 +29,9 @@ importers:
       vuedraggable:
         specifier: ^4.1.0
         version: 4.1.0(vue@3.3.8(typescript@5.5.3))
+      zod:
+        specifier: ^3.23.8
+        version: 3.23.8
     devDependencies:
       '@nuxt/devtools':
         specifier: latest
@@ -86,7 +89,7 @@ importers:
         version: 9.27.0(eslint@8.57.0)
       h3-zod:
         specifier: ^0.5.2
-        version: 0.5.2(h3@1.8.2)(zod@3.22.4)
+        version: 0.5.2(h3@1.8.2)(zod@3.23.8)
       mongoose:
         specifier: ^8.0.0
         version: 8.0.0(socks@2.7.1)
@@ -5423,8 +5426,8 @@ packages:
     resolution: {integrity: sha512-UfZ0oa0C8LI58wJ+moL46BDIMgCQbnsb+2PoiJYtonhBsMh2bq1eRBVkvjfVsqbEHd9/EgKPUuL9saSSsec8OA==}
     engines: {node: '>= 12.0.0'}
 
-  zod@3.22.4:
-    resolution: {integrity: sha512-iC+8Io04lddc+mVqQ9AZ7OQ2MrUKGN+oIQyq1vemgt46jwCwLfhq7/pwnBnNXXXZb8VTVLKwp9EDkx+ryxIWmg==}
+  zod@3.23.8:
+    resolution: {integrity: sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g==}
 
 snapshots:
 
@@ -8751,10 +8754,10 @@ snapshots:
     dependencies:
       duplexer: 0.1.2
 
-  h3-zod@0.5.2(h3@1.8.2)(zod@3.22.4):
+  h3-zod@0.5.2(h3@1.8.2)(zod@3.23.8):
     dependencies:
       h3: 1.8.2
-      zod: 3.22.4
+      zod: 3.23.8
 
   h3@1.8.2:
     dependencies:
@@ -11725,4 +11728,4 @@ snapshots:
       compress-commons: 5.0.1
       readable-stream: 3.6.2
 
-  zod@3.22.4: {}
+  zod@3.23.8: {}

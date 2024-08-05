@@ -15,14 +15,30 @@
     <!--          // List Header-->
 
     <!--          List Body-->
-    <div class="list-body p-2 flex-1 overflow-y-hidden">
-      {{ data }}
-    </div>
+    <draggable
+      v-if="data"
+      :force-fallback="true"
+      :list="data"
+      :scroll-sensitivity="500"
+      class="p-2 space-y-2 flex-1 overflow-y-hidden"
+      ghost-class="ghost-card"
+      group="list"
+      item-key="_id"
+      @change="handleCardChange"
+    >
+      <template #item="{ element }">
+        <ListCard
+          :card="element"
+          @click="() => handleCardUpdate(element)"
+        ></ListCard>
+      </template>
+    </draggable>
+
     <!--          //List Body-->
 
     <!--          List Footer-->
-    <div class="p-1 border-t dark:border-gray-700 felx items-center">
-      <UButton block>카드 추가</UButton>
+    <div class="p-1 border-t dark:border-gray-700 flex items-center">
+      <UButton block @click="showCardCreate = true">카드 추가</UButton>
     </div>
     <!--          //List Footer-->
 
@@ -33,6 +49,27 @@
             :on-click="() => (showCardCreate = false)"
             :title="selectedCard ? '카드 수정' : '카드 생성'"
           ></OverlayHeader>
+
+          <div class="p-2">
+            <FormCard
+              :initial-data="selectedCard"
+              :list-id="props.list._id"
+              :on-create="
+                () => {
+                  refresh();
+                  showCardCreate = false;
+                }
+              "
+              :on-update="
+                () => {
+                  refresh();
+                  showCardCreate = false;
+                  selectedCard = undefined;
+                }
+              "
+              :type="selectedCard ? 'update' : 'create'"
+            ></FormCard>
+          </div>
         </UCard>
       </UModal>
     </Teleport>
@@ -40,8 +77,10 @@
 </template>
 
 <script lang="ts" setup>
+import draggable from "vuedraggable";
 import type { ListDocument } from "~/server/models/List.model";
 import type { CardDocument } from "~/server/models/Card.model";
+import { useCard } from "#imports";
 
 interface Props {
   list: ListDocument;
@@ -49,13 +88,16 @@ interface Props {
 }
 
 const props = defineProps<Props>();
-const refresh = inject("board-refresh") as () => void;
+const refreshBoard = inject("board-refresh") as () => void;
 
 const listActions = ref([
   [
     {
       label: "카드추가",
       icon: "i-heroicons-plus-circle",
+      click: () => {
+        showCardCreate.value = true;
+      },
     },
   ],
   [
@@ -64,17 +106,61 @@ const listActions = ref([
       icon: "i-heroicons-trash",
       click: () => {
         destroy(props.list._id);
-        refresh();
+        refreshBoard();
       },
     },
   ],
 ]);
 
-const { destroy } = useList(props.boardId);
+const { destroy, update: updateList } = useList(props.boardId);
+const { update: updateCard } = useCard();
 
-const { data } = useFetch(`/api/lists/${props.list._id}/cards`);
+const { data, refresh } = useFetch<CardDocument[]>(
+  `/api/lists/${props.list._id}/cards`
+);
 const showCardCreate = ref(false);
 const selectedCard = ref<CardDocument | undefined>();
+
+function handleCardUpdate(card: CardDocument) {
+  selectedCard.value = card;
+  showCardCreate.value = true;
+}
+
+async function handleCardChange(e: any) {
+  try {
+    if (e.added) {
+      const { element: card } = e.added;
+      await updateCard(card._id, props.list._id, {
+        list: props.list._id,
+      });
+    }
+
+    await updateList(props.list._id, {
+      cards: data.value?.flatMap((item) => item._id),
+    });
+  } catch (e) {}
+}
+
+watch(showCardCreate, (val) => {
+  if (!val) {
+    selectedCard.value = undefined;
+  }
+});
 </script>
 
-<style scoped></style>
+<style scoped>
+.ghost-card {
+  @apply !bg-gray-100 dark:!bg-gray-700 rounded-lg;
+}
+.ghost-card > div {
+  @apply invisible;
+}
+
+.dragging-card {
+  @apply transform rotate-2 shadow-xl !cursor-grabbing;
+}
+.sortable-chosen {
+  opacity: 1 !important;
+  cursor: grabbing;
+}
+</style>

@@ -1,25 +1,47 @@
 <template>
-  <UForm :schema="CardSchema" :state="formState">
-    <UFormGroup label="Title" name="title">
-      <UInput v-model="formState.title"></UInput>
+  <UForm :schema="CardSchema" :state="formState" @submit="handleSubmit">
+    <UFormGroup class="mb-4" label="Title" name="title">
+      <UInput v-model="formState.title" autofocus type="text" />
     </UFormGroup>
-    <UFormGroup label="Description" name="description">
+
+    <UFormGroup class="mb-4" label="Description" name="description">
       <ClientOnly>
-        <QuillEditor v-model:content="formState.description"></QuillEditor>
+        <QuillEditor
+          v-model:content="formState.description"
+          content-type="html"
+          theme="snow"
+          toolbar="minimal"
+        />
       </ClientOnly>
     </UFormGroup>
+
+    <div class="flex gap-4 mt-4 justify-end">
+      <UButton
+        v-if="type === 'update'"
+        :loading="isLoading"
+        color="red"
+        icon="i-heroicons-trash"
+        type="button"
+        variant="soft"
+        @click="handleDelete"
+      >
+      </UButton>
+      <UButton :block="type === 'create'" :loading="isLoading" type="submit">
+        {{ type === "create" ? "생성" : "수정" }}
+      </UButton>
+    </div>
   </UForm>
 </template>
-
 <script lang="ts" setup>
-import CardSchema from "~/schemas/Card.schema.js";
-import { BoardDocument } from "~/server/models/Board.model";
+import type { FormSubmitEvent } from "@nuxt/ui/dist/runtime/types";
+import { z } from "h3-zod";
+import CardSchema from "~/schemas/Card.schema";
 import type { CardDocument } from "~/server/models/Card.model";
 
 interface Props {
   type: "create" | "update";
-  initialData?: CardDocument;
   listId: string;
+  initialData?: Partial<CardDocument>;
   onCreate?: () => void;
   onUpdate?: () => void;
 }
@@ -28,8 +50,90 @@ const props = withDefaults(defineProps<Props>(), {
   type: "create",
 });
 
-const formState = reactive({
-  description: undefined,
+const PartialCardSchema = CardSchema.partial();
+
+const isLoading = ref(false);
+const formState = reactive<z.infer<typeof PartialCardSchema>>({
   title: undefined,
+  description: undefined,
+  list: props.listId,
+});
+
+async function handleSubmit(e: FormSubmitEvent<z.output<typeof CardSchema>>) {
+  try {
+    isLoading.value = true;
+
+    if ((props.type === "update", props.initialData)) {
+      await useFetch(
+        `/api/lists/${props.listId}/cards/${props.initialData._id}`,
+        {
+          method: "PUT",
+          body: JSON.stringify(e.data),
+          watch: false,
+        }
+      );
+      props.onUpdate?.();
+      return;
+    }
+
+    await useFetch(`/api/lists/${props.listId}/cards`, {
+      method: "POST",
+      body: JSON.stringify(e.data),
+      watch: false,
+    });
+    props.onCreate?.();
+  } catch (e: any) {
+    useToast().add({
+      title: "Error",
+      description: e.message || "Something went wrong",
+    });
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+async function handleDelete() {
+  try {
+    isLoading.value = true;
+    await useFetch(
+      `/api/lists/${props.listId}/cards/${props.initialData?._id}`,
+      {
+        method: "DELETE",
+        watch: false,
+      }
+    );
+    props.onUpdate?.();
+  } catch (e: any) {
+    useToast().add({
+      title: "Error",
+      description: e.message || "Something went wrong",
+    });
+  } finally {
+    isLoading.value = false;
+  }
+}
+
+watchEffect(() => {
+  if (props.type === "update" && props.initialData) {
+    formState.title = props.initialData.title;
+    formState.description = props.initialData.description;
+  }
+
+  if (props.type === "create") {
+    formState.title = undefined;
+    formState.description = undefined;
+  }
 });
 </script>
+
+<style>
+.ql-editor {
+  @apply h-32 rounded-b-lg shadow;
+}
+.ql-container {
+  @apply h-32 rounded-b-lg shadow;
+}
+.ql-toolbar {
+  @apply rounded-t-lg;
+}
+</style>

@@ -11,7 +11,12 @@
       ></div>
     </div>
 
-    <div class="flex items-center gap-2 absolute left-0 z-10 top-0 py-2 px-4">
+    <div
+      :class="{
+        absolute: board.coverImage,
+      }"
+      class="flex items-center gap-2 left-0 z-10 top-0 py-2 px-4"
+    >
       <NuxtLink
         :to="{
           name: 'boardId',
@@ -29,6 +34,7 @@
 
 <script lang="ts" setup>
 import type { BoardDocument } from "~/server/models/Board.model";
+import { useBoard } from "~/composables/useBoard";
 
 // 참고 https://engineer-mole.tistory.com/393#google_vignette
 // https://ko.vuejs.org/guide/components/provide-inject
@@ -39,7 +45,8 @@ interface Props {
 }
 const props = defineProps<Props>();
 
-//const refreshBoard = inject("refresh-boards") as () => void;
+const refreshBoards = inject("refresh-boards") as () => void;
+const { destroy } = useBoard();
 
 const actions = ref([
   [
@@ -55,7 +62,10 @@ const actions = ref([
     {
       label: "Delete",
       icon: "i-heroicons-trash",
-      click: () => {},
+      click: async () => {
+        await destroy(props.board._id);
+        refreshBoards();
+      },
     },
   ],
 ]);

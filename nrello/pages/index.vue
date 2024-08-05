@@ -53,6 +53,7 @@ definePageMeta({
 });
 
 const { data, refresh } = useFetch<BoardDocument>("/api/boards");
+provide("refresh-boards", refresh());
 const showCreateBoard = ref(false);
 const selectedBoard = ref<BoardDocument | undefined>();
 </script>

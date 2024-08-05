@@ -46,6 +46,10 @@
 import type { ListDocument } from "~/server/models/List.model";
 import type { BoardDocument } from "~/server/models/Board.model";
 
+definePageMeta({
+  middleware: "auth",
+});
+
 const { boardId } = useRoute().params;
 
 const { data, refresh } = await useFetch<BoardDocument>(
