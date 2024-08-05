@@ -1,9 +1,9 @@
 import { getServerSession } from "#auth";
+// @ts-ignore
 import { getRequestURL } from "h3";
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event);
-  console.log(session);
 
   // 인증 접근 권한 설정
   const protectedRoutes = ["/api/users", "/api/boards", "/api/lists"];
