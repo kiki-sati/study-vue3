@@ -1,7 +1,7 @@
 import type { ListDocument } from "~/server/models/List.model";
 
 export const useBoard = () => {
-  async function destroy(boardId: string) {
+  async function deleteBoard(boardId: string) {
     try {
       await useFetch(`/api/boards/${boardId}`, {
         method: "DELETE",
@@ -19,6 +19,6 @@ export const useBoard = () => {
   }
 
   return {
-    destroy,
+    deleteBoard: deleteBoard,
   };
 };

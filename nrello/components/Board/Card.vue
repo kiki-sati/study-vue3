@@ -31,40 +31,42 @@
     </div>
   </div>
 </template>
-
 <script lang="ts" setup>
-import type { BoardDocument } from "~/server/models/Board.model";
-import { useBoard } from "~/composables/useBoard";
+import type { BoardDocument } from "~/server/models/Board.model"; // Board 문서 타입 가져오기
+import { useBoard } from "~/composables/useBoard"; // useBoard 훅 가져오기
+
+// Props 타입 정의
+interface Props {
+  board: BoardDocument; // 보드 객체
+  onEdit?: (board: BoardDocument) => void; // 편집 콜백 (선택적)
+}
+
+const props = defineProps<Props>(); // Props 설정
 
 // 참고 https://engineer-mole.tistory.com/393#google_vignette
-// https://ko.vuejs.org/guide/components/provide-inject
+//https://ko.vuejs.org/guide/components/provide-inject
+const refreshBoards = inject("refresh-boards") as () => void; // 보드 목록 새로 고침 함수 주입
 
-interface Props {
-  board: BoardDocument;
-  onEdit?: (board: BoardDocument) => void;
-}
-const props = defineProps<Props>();
+const { deleteBoard } = useBoard(); // 보드 삭제 함수 가져오기
 
-const refreshBoards = inject("refresh-boards") as () => void;
-const { destroy } = useBoard();
-
+// 드롭다운 메뉴 항목
 const actions = ref([
   [
     {
-      label: "Edit",
-      icon: "i-heroicons-pencil",
+      label: "Edit", // 편집 버튼
+      icon: "i-heroicons-pencil", // 편집 아이콘
       click: () => {
-        props.onEdit?.(props.board);
+        props.onEdit?.(props.board); // 편집 콜백 호출
       },
     },
   ],
   [
     {
-      label: "Delete",
-      icon: "i-heroicons-trash",
+      label: "Delete", // 삭제 버튼
+      icon: "i-heroicons-trash", // 삭제 아이콘
       click: async () => {
-        await destroy(props.board._id);
-        refreshBoards();
+        await deleteBoard(props.board._id); // 보드 삭제
+        refreshBoards(); // 목록 새로 고침
       },
     },
   ],
