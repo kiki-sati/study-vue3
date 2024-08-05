@@ -20,7 +20,7 @@
         </g>
       </svg>
     </div>
-    <div class="text-xl font-bold">Nrello</div>
+    <div class="text-xl font-bold">Board</div>
   </div>
 </template>
 
