@@ -1,6 +1,6 @@
 import { Validator } from "#nuxt-server-utils";
 import ListSchema from "~/schemas/List.schema";
-import { List } from "~/server/models/List.model";
+import { List } from "~/server/models/List";
 
 export default defineEventHandler(async (event) => {
   const listId = getRouterParam(event, "listId");

@@ -1,6 +1,6 @@
-import { UserDocument } from "~/server/models/User.model";
-import { Card } from "~/server/models/Card.model";
-import { List } from "~/server/models/List.model";
+import { UserDocument } from "~/server/models/User";
+import { Card } from "~/server/models/Card";
+import { List } from "~/server/models/List";
 
 export default defineEventHandler(async (event) => {
   const cardId = getRouterParam(event, "cardId");

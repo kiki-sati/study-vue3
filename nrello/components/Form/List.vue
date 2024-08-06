@@ -13,7 +13,7 @@
 <script lang="ts" setup>
 import type { FormSubmitEvent } from "#ui/types";
 import { z } from "zod";
-import type { ListDocument } from "~/server/models/List.model";
+import type { ListDocument } from "~/server/models/List";
 import ListSchema from "~/schemas/List.schema";
 
 interface Props {

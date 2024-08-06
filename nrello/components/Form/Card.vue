@@ -36,7 +36,7 @@
 import type { FormSubmitEvent } from "@nuxt/ui/dist/runtime/types";
 import { z } from "h3-zod";
 import CardSchema from "~/schemas/Card.schema";
-import type { CardDocument } from "~/server/models/Card.model";
+import type { CardDocument } from "~/server/models/Card";
 
 interface Props {
   type: "create" | "update";

@@ -3,7 +3,6 @@
 export default defineNuxtConfig({
   runtimeConfig: {
     auth: {
-      secret: process.env.AUTH_SECRET,
       origin: process.env.AUTH_ORIGIN,
     },
     public: {

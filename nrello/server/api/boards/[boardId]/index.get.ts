@@ -1,5 +1,5 @@
-import { Board } from "~/server/models/Board.model";
-import { List } from "~/server/models/List.model";
+import { Board } from "~/server/models/Board";
+import { List } from "~/server/models/List";
 
 export default defineEventHandler(async (event) => {
   const user = event.context.user;

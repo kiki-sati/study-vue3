@@ -1,7 +1,7 @@
-import { UserDocument } from "~/server/models/User.model";
-import { List } from "~/server/models/List.model";
-import { Board } from "~/server/models/Board.model";
-import { Card } from "~/server/models/Card.model";
+import { UserDocument } from "~/server/models/User";
+import { List } from "~/server/models/List";
+import { Board } from "~/server/models/Board";
+import { Card } from "~/server/models/Card";
 
 export default defineEventHandler(async (event) => {
   const listId = getRouterParam(event, "listId");

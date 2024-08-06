@@ -1,6 +1,6 @@
 import { NuxtAuthHandler } from "#auth";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { User } from "~/server/models/User.model";
+import { User } from "~/server/models/User";
 
 async function getUser(id: string) {
   const user = await User.findById(id);

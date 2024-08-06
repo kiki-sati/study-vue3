@@ -1,6 +1,6 @@
 import { Validator } from "#nuxt-server-utils";
 import CardSchema from "~/schemas/Card.schema";
-import { Card } from "~/server/models/Card.model";
+import { Card } from "~/server/models/Card";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);

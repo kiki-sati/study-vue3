@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import draggable from "vuedraggable";
-import type { ListDocument } from "~/server/models/List.model";
+import type { ListDocument } from "~/server/models/List";
 import { useList } from "~/composables/useList";
 
 interface Props {

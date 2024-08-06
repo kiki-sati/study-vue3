@@ -7,7 +7,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { CardDocument } from "~/server/models/Card.model";
+import type { CardDocument } from "~/server/models/Card";
 
 defineProps<{
   card: CardDocument;

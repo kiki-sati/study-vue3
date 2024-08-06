@@ -46,7 +46,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { BoardDocument } from "~/server/models/Board.model";
+import type { BoardDocument } from "~/server/models/Board";
 
 definePageMeta({
   middleware: "auth",
@@ -57,5 +57,3 @@ provide("refresh-boards", refresh());
 const showCreateBoard = ref(false);
 const selectedBoard = ref<BoardDocument | undefined>();
 </script>
-
-<style scoped></style>

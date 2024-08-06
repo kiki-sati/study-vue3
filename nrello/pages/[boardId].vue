@@ -43,8 +43,8 @@
 </template>
 
 <script lang="ts" setup>
-import type { ListDocument } from "~/server/models/List.model";
-import type { BoardDocument } from "~/server/models/Board.model";
+import type { ListDocument } from "~/server/models/List";
+import type { BoardDocument } from "~/server/models/Board";
 
 definePageMeta({
   middleware: "auth",

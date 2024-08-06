@@ -1,5 +1,5 @@
-import { List } from "~/server/models/List.model";
-import { Board } from "~/server/models/Board.model";
+import { List } from "~/server/models/List";
+import { Board } from "~/server/models/Board";
 
 export default defineEventHandler(async (event) => {
   const body = await readBody(event);

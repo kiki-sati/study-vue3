@@ -1,19 +1,20 @@
 <template>
   <WrapperAuth title="계정에 로그인 하세요">
-    <UForm :state="formState" :schema="SigninSchema" @submit="handleSignin">
-      <UFormGroup class="mb-4" name="email" label="Email">
+    <UForm :schema="SigninSchema" :state="formState" @submit="handleSignin">
+      <UFormGroup class="mb-4" label="Email" name="email">
         <UInput v-model="formState.email" type="email"></UInput>
       </UFormGroup>
-      <UFormGroup class="mb-4" name="password" label="Password">
+      <UFormGroup class="mb-4" label="Password" name="password">
         <UInput v-model="formState.password" type="password"></UInput>
       </UFormGroup>
 
-      <UButton type="submit" :loading="isLoading" block>로그인</UButton>
+      <UButton :loading="isLoading" block class="mb-3" type="submit">로그인</UButton>
+      <UButton block @click="redirectToSignUp">회원가입</UButton>
     </UForm>
   </WrapperAuth>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 import SigninSchema from "~/schemas/Signin.schema";
 import type {FormSubmitEvent} from "#ui/types";
 import {z} from "zod";
@@ -27,6 +28,8 @@ const formState = reactive({
 
 const {signIn} = useAuth()
 
+let router = useRouter()
+
 async function handleSignin(event: FormSubmitEvent<z.output<typeof SigninSchema>>) {
 
   try {
@@ -39,7 +42,7 @@ async function handleSignin(event: FormSubmitEvent<z.output<typeof SigninSchema>
 
     // @ts-expect-error
     if (!res.error) {
-      useRouter().push('/')
+      router.push('/')
     }
 
   } catch (e) {
@@ -47,7 +50,12 @@ async function handleSignin(event: FormSubmitEvent<z.output<typeof SigninSchema>
   } finally {
     isLoading.value = false
   }
+}
 
+
+
+function redirectToSignUp() {
+  router.push('/auth/signup')
 }
 
 </script>

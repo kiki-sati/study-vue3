@@ -78,8 +78,8 @@
 
 <script lang="ts" setup>
 import draggable from "vuedraggable";
-import type { ListDocument } from "~/server/models/List.model";
-import type { CardDocument } from "~/server/models/Card.model";
+import type { ListDocument } from "~/server/models/List";
+import type { CardDocument } from "~/server/models/Card";
 import { useCard } from "#imports";
 
 interface Props {

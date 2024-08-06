@@ -1,4 +1,4 @@
-import type { ListDocument } from "~/server/models/List.model";
+import type { ListDocument } from "~/server/models/List";
 
 export const useBoard = () => {
   async function deleteBoard(boardId: string) {

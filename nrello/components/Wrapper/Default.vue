@@ -50,13 +50,6 @@ const dropdownItems = ref([
   ],
   [
     {
-      label: "Billing",
-      icon: "i-heroicons-credit-card",
-      click: () => {},
-    },
-  ],
-  [
-    {
       label: "Sign out",
       icon: "i-heroicons-arrow-left-on-rectangle",
       click: handleSignOut,

@@ -32,7 +32,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { BoardDocument } from "~/server/models/Board.model"; // Board 문서 타입 가져오기
+import type { BoardDocument } from "~/server/models/Board"; // Board 문서 타입 가져오기
 import { useBoard } from "~/composables/useBoard"; // useBoard 훅 가져오기
 
 // Props 타입 정의

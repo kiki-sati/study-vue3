@@ -1,8 +1,8 @@
-import { UserDocument } from "~/server/models/User.model";
+import { UserDocument } from "~/server/models/User";
 import { Validator } from "#nuxt-server-utils";
 import CardSchema from "~/schemas/Card.schema";
-import { Card } from "~/server/models/Card.model";
-import { List } from "~/server/models/List.model";
+import { Card } from "~/server/models/Card";
+import { List } from "~/server/models/List";
 
 export default defineEventHandler(async (event) => {
   const user = event.context.user as UserDocument;

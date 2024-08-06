@@ -1,4 +1,4 @@
-import type { CardDocument } from "~/server/models/Card.model";
+import type { CardDocument } from "~/server/models/Card";
 
 export const useCard = () => {
   async function update(

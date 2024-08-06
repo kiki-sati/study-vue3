@@ -1,6 +1,6 @@
 import { Schema, model } from "mongoose";
 import type { Document } from "mongoose";
-import { ListDocument } from "~/server/models/List.model";
+import { ListDocument } from "~/server/models/List";
 
 export interface BoardDocument extends Document {
   name: string;

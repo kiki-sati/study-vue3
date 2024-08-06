@@ -1,4 +1,4 @@
-import type { ListDocument } from "~/server/models/List.model";
+import type { ListDocument } from "~/server/models/List";
 
 export const useList = (boardId: string) => {
   async function handleSort(e: any, lists: ListDocument[]) {

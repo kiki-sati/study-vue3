@@ -13,7 +13,7 @@
 </template>
 
 <script lang="ts" setup>
-import type { BoardDocument } from "~/server/models/Board.model";
+import type { BoardDocument } from "~/server/models/Board";
 import BoardSchema from "~/schemas/Board.schema";
 import type { FormSubmitEvent } from "#ui/types";
 import { z } from "zod";

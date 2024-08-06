@@ -1,6 +1,6 @@
 import { Validator } from "#nuxt-server-utils";
 import BoardSchema from "~/schemas/Board.schema";
-import { Board } from "~/server/models/Board.model";
+import { Board } from "~/server/models/Board";
 
 export default defineEventHandler(async (event) => {
   const user = event.context.user;
