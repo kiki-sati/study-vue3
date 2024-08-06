@@ -15,6 +15,10 @@
       </ClientOnly>
     </UFormGroup>
 
+    <UFormGroup class="mb-4" label="Label" name="label">
+      <UInput v-model="formState.label" autofocus type="text" />
+    </UFormGroup>
+
     <div class="flex gap-4 mt-4 justify-end">
       <UButton
         v-if="type === 'update'"
@@ -56,6 +60,7 @@ const isLoading = ref(false);
 const formState = reactive<z.infer<typeof PartialCardSchema>>({
   title: undefined,
   description: undefined,
+  label: undefined,
   list: props.listId,
 });
 
@@ -85,7 +90,7 @@ async function handleSubmit(e: FormSubmitEvent<z.output<typeof CardSchema>>) {
   } catch (e: any) {
     useToast().add({
       title: "Error",
-      description: e.message || "Something went wrong",
+      description: e.message || "오류가 발생하였습니다.",
     });
   } finally {
     isLoading.value = false;
@@ -106,7 +111,7 @@ async function handleDelete() {
   } catch (e: any) {
     useToast().add({
       title: "Error",
-      description: e.message || "Something went wrong",
+      description: e.message || "오류가 발생하였습니다.",
     });
   } finally {
     isLoading.value = false;
@@ -117,11 +122,13 @@ watchEffect(() => {
   if (props.type === "update" && props.initialData) {
     formState.title = props.initialData.title;
     formState.description = props.initialData.description;
+    formState.label = props.initialData.label;
   }
 
   if (props.type === "create") {
     formState.title = undefined;
     formState.description = undefined;
+    formState.label = undefined;
   }
 });
 </script>

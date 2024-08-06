@@ -16,6 +16,7 @@ export default defineNuxtConfig({
     "nuxt-server-utils",
     "@sidebase/nuxt-auth",
     "@nuxt/image",
+    "@pinia/nuxt",
   ],
 
   ui: {},

@@ -5,13 +5,14 @@ export interface CardDocument extends Document {
   description: string;
   owner: string;
   list: string;
+  label?: string;
 }
 
 const cardSchema = new Schema(
   {
     title: {
       type: String,
-      required: [true, "Title is required"],
+      required: [true, "제목은 필수 항목입니다."],
     },
     description: {
       type: String,
@@ -20,12 +21,17 @@ const cardSchema = new Schema(
     owner: {
       type: Schema.Types.ObjectId,
       ref: "User",
-      required: [true, "Owner is required"],
+      required: [true, "소유자는 필수 항목입니다."],
     },
     list: {
       type: Schema.Types.ObjectId,
       ref: "List",
-      required: [true, "List is required"],
+      required: [true, "목록은 필수 항목입니다."],
+    },
+    label: {
+      type: String,
+      default: null,
+      required: [true, "라벨은 필수 값 입니다."],
     },
   },
   {

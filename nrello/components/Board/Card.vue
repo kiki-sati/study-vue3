@@ -1,30 +1,19 @@
 <template>
+  <!-- 보드 컴포넌트 -->
   <div class="shadow dark:bg-gray-800 rounded-lg overflow-hidden relative">
+    <!-- 커버 이미지가 있는 경우 -->
     <div v-if="board.coverImage" class="h-36 w-full relative z-[1]">
-      <NuxtImg
-        :alt="board.name"
-        :src="board.coverImage"
-        class="h-full w-full absolute object-cover z-[1]"
-      />
-      <div
-        class="absolute w-full h-full z-[2] bg-gradient-to-b from-black/90 to-transparent"
-      ></div>
+      <NuxtImg :alt="board.name" :src="board.coverImage" class="h-full w-full absolute object-cover z-[1]" />
+      <!-- 그라데이션 레이어 -->
+      <div class="absolute w-full h-full z-[2] bg-gradient-to-b from-black/90 to-transparent"></div>
     </div>
 
-    <div
-      :class="{
-        absolute: board.coverImage,
-      }"
-      class="flex items-center gap-2 left-0 z-10 top-0 py-2 px-4"
-    >
-      <NuxtLink
-        :to="{
-          name: 'boardId',
-          params: { boardId: board._id },
-        }"
-        class="block font-semibold text-white"
-        >{{ board.name }}
-      </NuxtLink>
+    <!-- 커버 이미지가 있는 경우에만 절대 위치 적용 -->
+    <div :class="{ absolute: board.coverImage }" class="flex items-center gap-2 left-0 z-10 top-0 py-2 px-4">
+      <!-- /pages/[boardId].vue 로 이동 -->
+      <NuxtLink :to="{ name: 'boardId', params: { boardId: board._id } }" class="block font-semibold text-white">{{
+        board.name }}</NuxtLink>
+      <!-- 액션 드롭다운 -->
       <UDropdown :items="actions">
         <UIcon class="text-white" name="i-heroicons-cog-6-tooth"></UIcon>
       </UDropdown>
@@ -32,45 +21,42 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { BoardDocument } from "~/server/models/Board"; // Board 문서 타입 가져오기
-import { useBoard } from "~/composables/useBoard"; // useBoard 훅 가져오기
+import type { BoardDocument } from "~/server/models/Board";
+import { useBoard } from "~/composables/useBoard";
 
-// Props 타입 정의
 interface Props {
-  board: BoardDocument; // 보드 객체
-  onEdit?: (board: BoardDocument) => void; // 편집 콜백 (선택적)
+  board: BoardDocument;
+  onEdit?: (board: BoardDocument) => void;
 }
 
-const props = defineProps<Props>(); // Props 설정
+const props = defineProps<Props>();
 
-// 참고 https://engineer-mole.tistory.com/393#google_vignette
-//https://ko.vuejs.org/guide/components/provide-inject
-const refreshBoards = inject("refresh-boards") as () => void; // 보드 목록 새로 고침 함수 주입
+const refreshBoards = inject("refresh-boards") as () => void;
 
-const { deleteBoard } = useBoard(); // 보드 삭제 함수 가져오기
+const { deleteBoard } = useBoard();
 
-// 드롭다운 메뉴 항목
+// 액션 항목 정의
 const actions = ref([
   [
     {
-      label: "Edit", // 편집 버튼
-      icon: "i-heroicons-pencil", // 편집 아이콘
+      label: "수정",
+      icon: "i-heroicons-pencil",
+      // 수정 클릭 이벤트
       click: () => {
-        props.onEdit?.(props.board); // 편집 콜백 호출
+        props.onEdit?.(props.board);
       },
     },
   ],
   [
     {
-      label: "Delete", // 삭제 버튼
-      icon: "i-heroicons-trash", // 삭제 아이콘
+      label: "삭제",
+      icon: "i-heroicons-trash",
+      // 삭제 클릭 이벤트
       click: async () => {
-        await deleteBoard(props.board._id); // 보드 삭제
-        refreshBoards(); // 목록 새로 고침
+        await deleteBoard(props.board._id);
+        refreshBoards();
       },
     },
   ],
 ]);
 </script>
-
-<style scoped></style>

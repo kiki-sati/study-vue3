@@ -74,7 +74,7 @@ async function handlerForm(
     props.onCreate?.();
 
     useToast().add({
-      title: "보드 생성",
+      title: "목록 생성",
     });
   } catch (error) {
     console.error("API 요청 실패:", error);

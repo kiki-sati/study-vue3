@@ -62,3 +62,15 @@
   - `owner`: `ObjectId`로 `User` 컬렉션을 참조.
   - `list`: `ObjectId`로 `List` 컬렉션을 참조.
 
+
+## 사용 핵심 기술
+## Vue 3 Teleport
+- HTML 요소를 지정한 위치로 이동시키는 컴포넌트
+- 주로 모달, 툴팁, 드롭다운 메뉴와 같은 UI 요소를 특정 위치에 렌더링할 때 유용
+### 주요 기능
+- **요소를 원하는 위치에 렌더링**: 요소를 특정 부모나 `body` 등 원하는 곳에 이동시켜 렌더링.
+- **레이아웃에 영향 없음**: 요소를 이동시켜도 기존 레이아웃에 영향을 주지 않음.
+
+### 참고 자료
+- [Vue.js 공식 문서 - Teleport](https://vuejs.org/guide/built-ins/teleport.html)
+- [공식 vue3 teleport api ](https://vuejs.org/api/built-in-components.html#teleport)
