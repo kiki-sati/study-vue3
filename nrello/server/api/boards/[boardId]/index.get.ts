@@ -12,7 +12,6 @@ export default defineEventHandler(async (event) => {
     path: "lists",
     model: List,
   });
-  console.log(board);
 
   return board;
 });

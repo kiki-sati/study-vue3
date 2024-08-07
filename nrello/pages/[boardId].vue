@@ -19,17 +19,14 @@
 
       <div class="p-4">
         <!-- 목록 생성/수정 폼 -->
-        <FormList :board-Id="(boardId as string)" :initial-data="selectedList" :on-create="() => {
-            refresh();
-            showListCreate = false;
-          }
-          " :type="selectedList ? 'update' : 'create'"></FormList>
+        <FormList :board-Id="(boardId as string)" :initial-data="selectedList" :on-create="handleCreate" :type="selectedList ? 'update' : 'create'"></FormList>
       </div>
     </USlideover>
   </wrapperDefault>
 </template>
 
 <script lang="ts" setup>
+import { ref, watch, nextTick } from 'vue';
 import type { ListDocument } from "~/server/models/List";
 import type { BoardDocument } from "~/server/models/Board";
 
@@ -55,6 +52,38 @@ if (!data.value) {
 // 변경사항 발생 시 새로고침
 provide("board-refresh", refresh);
 
-const selectedList = ref<ListDocument | undefined>();
+const store = useStore();
 const showListCreate = ref(false);
+const selectedList = ref<ListDocument | undefined>(undefined);
+
+watch(
+  () => store.showListCreate,
+  (newVal) => {
+    console.log('watch store.showListCreate', newVal); // 디버깅용 로그
+    showListCreate.value = newVal;
+  }
+);
+
+watch(
+  () => store.selectedList,
+  (newVal) => {
+    selectedList.value = newVal;
+  }
+);
+
+// refreshBoardFlag 값이 변경될 때 보드를 새로고침
+watch(
+  () => store.refreshBoardFlag,
+  () => {
+    refresh();
+  }
+);
+
+async function handleCreate() {
+  refresh();
+  store.showListCreate = false;
+  await nextTick();
+  showListCreate.value = false; // 강제로 슬라이드를 닫음
+  console.log('showListCreate after nextTick:', showListCreate.value);
+}
 </script>

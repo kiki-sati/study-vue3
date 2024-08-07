@@ -67,12 +67,11 @@ async function handlerForm(
       return;
     }
 
-    const response = await useFetch("/api/boards", {
+    await useFetch("/api/boards", {
       method: "POST",
       body: event.data,
       watch: false,
     });
-    console.log("API 요청 성공:", response);
     props.onCreate?.();
 
     useToast().add({

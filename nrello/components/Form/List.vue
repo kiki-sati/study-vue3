@@ -11,6 +11,7 @@
 </template>
 
 <script lang="ts" setup>
+import { ref, reactive } from 'vue';
 import type { FormSubmitEvent } from "#ui/types";
 import { z } from "zod";
 import type { ListDocument } from "~/server/models/List";
@@ -33,16 +34,14 @@ const formState = reactive<Partial<ListDocument>>({
   board: props.boardId,
 });
 
+const store = useStore();
+
 watchEffect(() => {
   if (props.type === "update" && props.initialData) {
     formState.name = props.initialData.name;
   }
-
-  /*  if (props.type === "create") {
-    formState.name = undefined;
-    formState.coverImage = undefined;
-  }*/
 });
+
 async function handlerForm(
   event: FormSubmitEvent<z.output<typeof ListSchema>>
 ) {
@@ -62,6 +61,9 @@ async function handlerForm(
         title: "보드 수정",
       });
 
+      store.closeListCreate(); // 슬라이드 닫기 및 새로고침 플래그 설정
+      console.log('store.closeListCreate called'); // 디버깅용 로그
+
       return;
     }
 
@@ -76,6 +78,10 @@ async function handlerForm(
     useToast().add({
       title: "목록 생성",
     });
+
+    store.closeListCreate(); // 슬라이드 닫기 및 새로고침 플래그 설정
+    console.log('store.closeListCreate called'); // 디버깅용 로그
+
   } catch (error) {
     console.error("API 요청 실패:", error);
   } finally {
@@ -83,5 +89,3 @@ async function handlerForm(
   }
 }
 </script>
-
-<style scoped></style>
