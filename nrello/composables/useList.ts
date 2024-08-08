@@ -2,6 +2,7 @@ import type { ListDocument } from "~/server/models/List";
 
 // boardId 기준으로 사용자 목록을 관리하는 Hook
 export const useList = (boardId: string) => {
+
   // 순서를 업데이트 하는 함수
   async function handleSort(lists: ListDocument[]) {
     await useFetch(`/api/boards/${boardId}`, {

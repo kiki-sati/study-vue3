@@ -134,6 +134,9 @@ stores
   - `owner`: `ObjectId`로 `User` 컬렉션을 참조.
   - `list`: `ObjectId`로 `List` 컬렉션을 참조.
 
+---
+## 화면 흐름
+![img.png](img.png)
 
 ## 사용 문법 정리
 ### Vue 3 - Teleport
