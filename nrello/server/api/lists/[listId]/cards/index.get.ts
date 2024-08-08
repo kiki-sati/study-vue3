@@ -6,6 +6,8 @@ export default defineEventHandler(async (event) => {
   const listId = getRouterParam(event, "listId");
   const user = event.context.user as UserDocument;
 
+  // list 에 아이디 기준으로 찾음
+  // 추가로 리스에 포함된 카드도 같이 가져옴
   const list = await List.findOne({
     _id: listId,
     owner: user._id,
@@ -16,7 +18,7 @@ export default defineEventHandler(async (event) => {
 
   if (!list) {
     throw createError({
-      status: 404,
+      statusCode: 404,
       message: "Card not found",
     });
   }

@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   if (!card) {
     throw createError({
-      status: 404,
+      statusCode: 404,
       message: "Card not found",
     });
   }

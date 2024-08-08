@@ -38,7 +38,7 @@
 </template>
 
 <script lang="ts" setup>
-const { data, signOut } = useAuth();
+const { data, signOut } = useAuth(); // sidebase+nuxt-auth 모듈을 사용해서 useAuth Hook 사용
 
 const dropdownItems = ref([
   [
@@ -61,5 +61,3 @@ async function handleSignOut() {
   await signOut();
 }
 </script>
-
-<style scoped></style>

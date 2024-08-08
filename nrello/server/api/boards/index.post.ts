@@ -13,10 +13,8 @@ export default defineEventHandler(async (event) => {
   const body = await readBody(event);
   Validator.validateSchema(BoardSchema, body);
 
-  const board = await Board.create({
+  return await Board.create({
     ...body,
     owner: user._id,
   });
-
-  return board;
 });
