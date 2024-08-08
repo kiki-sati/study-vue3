@@ -1,5 +1,6 @@
 <template>
   <div>
+    <!-- @sort : 이벤트 리스너 바인딩을 위해 사용. 순서가 변경된 것을 감지하면 handleSort를 호출한다-->
     <draggable
       :force-fallback="true"
       :list="lists"
@@ -9,7 +10,7 @@
       ghost-class="ghost-board"
       handle=".list-handle"
       item-key="_id"
-      @sort="handleSort($event, lists)"
+      @change="sortLists"
     >
       <template #item="{ element }">
         <div class="flex">
@@ -33,6 +34,21 @@ interface Props {
 const props = defineProps<Props>();
 
 const { handleSort } = useList(props.boardId);
+
+// handleSort 함수 정의
+async function sortLists({ moved }: { moved: { element: ListDocument } }) {
+  if (!moved) return;
+  try {
+    const lists = props.lists;
+    await useList(props.boardId).handleSort(lists);
+  } catch (e: any) {
+    useToast().add({
+      title: "오류",
+      description: e.message || "문제가 발생하였습니다.",
+    });
+  }
+}
+
 </script>
 
 <style scoped>
