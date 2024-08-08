@@ -33,8 +33,6 @@ interface Props {
 
 const props = defineProps<Props>();
 
-const { handleSort } = useList(props.boardId);
-
 // handleSort 함수 정의
 async function sortLists({ moved }: { moved: { element: ListDocument } }) {
   if (!moved) return;

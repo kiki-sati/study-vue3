@@ -10,7 +10,8 @@
     <!-- 드래그 가능한 카드 목록 -->
     <draggable v-if="data" :force-fallback="true" :list="data" :scroll-sensitivity="500"
                class="p-2 space-y-2 flex-1 overflow-y-hidden" ghost-class="ghost-card" group="list" item-key="_id"
-               @change="handleCardChange">
+      @change="handleCardChange"
+    >
       <template #item="{ element }">
         <ListCard :card="element" @click="() => handleCardUpdate(element)"></ListCard>
       </template>
@@ -46,21 +47,29 @@ import type { ListDocument } from "~/server/models/List";
 import type { CardDocument } from "~/server/models/Card";
 import { useCard } from "#imports";
 
+// Props 인터페이스 정의
 interface Props {
   list: ListDocument;
   boardId: string;
 }
 
+// Props 정의
 const props = defineProps<Props>();
+
+// 보드를 새로고침 함수 주입
 const refreshBoard = inject("board-refresh") as () => void;
+
+// 상태 관리를 위한 스토어 객체 선언
 const store = useStore();
 
+// 리스트 액션 정의 (수정, 카드 추가, 삭제)
 const listActions = ref([
   [
     {
       label: "수정",
       icon: "i-heroicons-pencil",
       click: () => {
+        // 리스트 수정 함수 호출
         store.handleListModify(props.list);
       }
     }
@@ -69,6 +78,7 @@ const listActions = ref([
       label: "카드추가",
       icon: "i-heroicons-plus-circle",
       click: () => {
+        // 카드 생성 모달 표시
         showCardCreate.value = true;
       }
     }
@@ -78,6 +88,7 @@ const listActions = ref([
       label: "삭제",
       icon: "i-heroicons-trash",
       click: () => {
+        // 리스트 삭제 및 보드 새로고침
         destroy(props.list._id);
         refreshBoard();
       }
@@ -85,43 +96,59 @@ const listActions = ref([
   ]
 ]);
 
+// 리스트와 카드 관련 함수 가져오기
 const { destroy, update: updateList } = useList(props.boardId);
 const { update: updateCard } = useCard();
 
+// 리스트의 카드 데이터 비동기 호출
 const { data, refresh } = await useFetch<CardDocument[]>(
   `/api/lists/${props.list._id}/cards`
 );
+
+// 카드 생성 모달 상태
 const showCardCreate = ref(false);
+
+// 선택된 카드 상태
 const selectedCard = ref<CardDocument | undefined>();
 
+// 카드 업데이트 핸들러 함수
 function handleCardUpdate(card: CardDocument) {
+  // 선택된 카드 설정 및 카드 생성 모달 표시
   selectedCard.value = card;
   showCardCreate.value = true;
 }
 
-async function handleCardChange(e: any) {
+// 카드 변경 사항 핸들러 함수
+async function handleCardChange(event: any) {
   try {
-    if (e.added) {
-      const { element: card } = e.added;
+    if (event.added) {
+      const { element: card } = event.added;
+      // 카드
       await updateCard(card._id, props.list._id, {
         list: props.list._id
       });
+      console.log("updateCard : ");
     }
 
+    // 카드 이동시 list 수정
     await updateList(props.list._id, {
       cards: data.value?.flatMap((item) => item._id)
     });
+    console.log("updateList : ");
   } catch (e) {
-    console.error(e)
+    console.error(e);
   }
 }
 
+// 카드 생성 모달 상태 변화 감지
 watch(showCardCreate, (val) => {
   if (!val) {
+    // 카드 생성 모달이 닫힐 때 선택된 카드 초기화
     selectedCard.value = undefined;
   }
 });
 </script>
+
 
 <style scoped>
 .ghost-card {
@@ -136,10 +163,6 @@ watch(showCardCreate, (val) => {
   @apply invisible;
 }
 
-.dragging-card {
-  @apply transform rotate-2 shadow-xl;
-  cursor: grabbing !important;
-}
 
 .sortable-chosen {
   opacity: 1 !important;
